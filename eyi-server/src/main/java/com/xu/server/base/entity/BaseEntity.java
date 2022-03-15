@@ -1,14 +1,10 @@
 package com.xu.server.base.entity;
 
-import com.xu.commons.utils.SnowFlakeIdGenerator;
-import jdk.jfr.DataAmount;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -18,16 +14,32 @@ import java.time.LocalDateTime;
  */
 
 @Data
+@MappedSuperclass
 public class BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "snowflake")
     @GenericGenerator(name = "snowflake", strategy = "com.xu.server.base.util.SnowFlakeIdGeneratorUtil")
     private Long id;
+
+    @Column
+    @JsonIgnore
     private byte delFlag;
+
+    @Column
     private LocalDateTime createTime;
+
+    @Column
     private LocalDateTime deleteTime;
+
+    @Column
     private LocalDateTime updateTime;
+
+    @Column
     private Long createId;
+
+    @Column
     private Long deleteId;
+
+    @Column
     private Long updateId;
 }
