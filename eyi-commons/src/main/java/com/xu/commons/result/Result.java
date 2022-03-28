@@ -66,4 +66,24 @@ public class Result<T> {
     public static <T> Result<T> failed(ResultCode resultCode) {
         return new Result<>(false, null, resultCode);
     }
+
+    public Result<T> code(int code) {
+        this.code = code;
+        return this;
+    }
+
+    public Result<T> success(boolean success) {
+        this.success = success;
+        return this;
+    }
+
+    public Result<T> data(T data) {
+        this.data = data;
+        return this;
+    }
+
+    private Result<T> msg(String msg) {
+        this.msg = msg;
+        return this;
+    }
 }

@@ -27,6 +27,7 @@ public class EyiUser extends BaseEntity implements Serializable {
     private String username;
 
     @Column(length = 80, nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(length = 50)

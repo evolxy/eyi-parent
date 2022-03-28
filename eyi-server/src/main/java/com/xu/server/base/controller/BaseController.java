@@ -4,7 +4,6 @@ package com.xu.server.base.controller;
 import com.xu.commons.result.Result;
 import com.xu.server.base.service.IBaseService;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ import java.util.List;
 @Slf4j
 public class BaseController<T, M extends IBaseService<T>> {
     @Autowired
-    private M service;
+    protected M service;
 
     @GetMapping("/list")
     @ApiOperation("get List")
@@ -38,8 +37,26 @@ public class BaseController<T, M extends IBaseService<T>> {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("get page")
-    public Result<?> getById(@PathVariable String id) {
-        return Result.ok();
+    @ApiOperation("get by id")
+    public Result<?> getById(@PathVariable Long id) {
+        return Result.ok(service.getById(id));
+    }
+
+    @PutMapping("/")
+    @ApiOperation("update by id")
+    public Result<?> updateById(@RequestBody T entity) {
+        return Result.ok(service.saveOrUpdate(entity)) ;
+    }
+
+    @PostMapping("/")
+    @ApiOperation("save")
+    public Result<?> save(@RequestBody T entity) {
+        return Result.ok(service.saveOrUpdate(entity)) ;
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("delete by id")
+    public Result<?> removeById(@PathVariable Long id) {
+        return Result.ok(service.removeById(id));
     }
 }

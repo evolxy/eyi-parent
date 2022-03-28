@@ -28,7 +28,7 @@ public interface IBaseService<T> {
 
     T getById(Long id);
 
-    boolean saveOrUpdate(T entity);
+    T saveOrUpdate(T entity);
 
     boolean saveBatch(List<T> entities);
 

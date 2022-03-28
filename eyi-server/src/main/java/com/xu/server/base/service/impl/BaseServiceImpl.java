@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseService<T> {
     @Autowired
-    private M repository;
+    protected M repository;
 
     @Override
     public List<T> list() {
@@ -53,13 +53,12 @@ public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseSer
 
     @Override
     public T getById(Long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
-    public boolean saveOrUpdate(T entity) {
-        T save = repository.save(entity);
-        return true;
+    public T saveOrUpdate(T entity) {
+        return repository.save(entity);
     }
 
     @Override
