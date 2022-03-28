@@ -1,13 +1,14 @@
 package com.xu.server.base.service.impl;
 
+import com.xu.server.base.repository.BaseRepository;
 import com.xu.server.base.service.IBaseService;
-import org.hibernate.Criteria;
+import com.xu.server.base.util.QueryBuilderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.Repository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -16,13 +17,9 @@ import java.util.List;
  * @version 0.1
  * Created On 2022/3/16 16:52
  */
-@Service
-public class BaseServiceImpl<T, ID, M extends JpaRepository<T, ID>> implements IBaseService<T> {
-    private final M repository;
-
-    public BaseServiceImpl(M repository) {
-        this.repository = repository;
-    }
+public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseService<T> {
+    @Autowired
+    private M repository;
 
     @Override
     public List<T> list() {
@@ -30,17 +27,64 @@ public class BaseServiceImpl<T, ID, M extends JpaRepository<T, ID>> implements I
     }
 
     @Override
-    public List<T> list(Criteria criteria) {
-        return repository.findAll();
+    public List<T> list(Specification<T> criteria) {
+        return repository.findAll(criteria);
     }
 
     @Override
     public Page<T> page(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<T> page(int pageNo, int pageSize) {
+        return repository.findAll(PageRequest.of(pageNo, pageSize));
+    }
+
+    @Override
+    public Page<T> page(int pageNo, int pageSize, Sort sort) {
+        return repository.findAll(PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
+    public Page<T> page(int pageNo, int pageSize, T entity) {
+        return repository.findAll(QueryBuilderUtil.specificationBuild(entity), PageRequest.of(pageNo, pageSize));
+    }
+
+    @Override
+    public T getById(Long id) {
         return null;
     }
 
     @Override
-    public Page<T> page(Pageable pageable, Criteria criteria) {
-        return null;
+    public boolean saveOrUpdate(T entity) {
+        T save = repository.save(entity);
+        return true;
+    }
+
+    @Override
+    public boolean saveBatch(List<T> entities) {
+        return false;
+    }
+
+    @Override
+    public boolean saveOrUpdateBatch(List<T> entities) {
+        return false;
+    }
+
+    @Override
+    public boolean removeById(Long id) {
+        repository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public boolean remove(Specification<T> specification) {
+        return false;
+    }
+
+    @Override
+    public List<T> list(T entity) {
+        return repository.findAll(QueryBuilderUtil.specificationBuild(entity));
     }
 }

@@ -1,6 +1,9 @@
 package com.xu.server.admin.user.services.impl;
 
+import com.xu.server.admin.user.entities.EyiUser;
+import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.admin.user.services.IUserInfoService;
+import com.xu.server.base.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,5 +13,5 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserInfoServiceImpl implements IUserInfoService {
+public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoRepository> implements IUserInfoService {
 }

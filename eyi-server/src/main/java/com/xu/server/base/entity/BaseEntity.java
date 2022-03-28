@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,10 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
-public class BaseEntity  {
+public class BaseEntity implements Serializable {
+    @Transient
+    private static final long serialVersionUID = 3737899427754241961L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "snowflake")
     @GenericGenerator(name = "snowflake", strategy = "com.xu.server.base.util.SnowFlakeIdGeneratorUtil")

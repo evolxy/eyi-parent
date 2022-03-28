@@ -1,7 +1,7 @@
 package com.xu.server.admin.user.repository;
 
 import com.xu.server.admin.user.entities.EyiUser;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.xu.server.base.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * Created On 2022/3/15 16:55
  */
 @Repository
-public interface UserInfoRepository extends JpaRepository<EyiUser, Long> {
+public interface UserInfoRepository extends BaseRepository<EyiUser> {
 }

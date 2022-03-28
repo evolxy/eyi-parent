@@ -1,8 +1,9 @@
 package com.xu.server.base.service;
 
-import org.hibernate.Criteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -15,9 +16,28 @@ import java.util.List;
 public interface IBaseService<T> {
     List<T> list();
 
-    List<T> list(Criteria criteria);
+    List<T> list(Specification<T> criteria);
 
     Page<T> page(Pageable pageable);
 
-    Page<T> page(Pageable pageable, Criteria criteria);
+    Page<T> page(int pageNo, int pageSize) ;
+
+    Page<T> page(int pageNo, int pageSize, Sort sort) ;
+
+    Page<T> page(int pageNo, int pageSize, T entity) ;
+
+    T getById(Long id);
+
+    boolean saveOrUpdate(T entity);
+
+    boolean saveBatch(List<T> entities);
+
+    boolean saveOrUpdateBatch(List<T> entities);
+
+    boolean removeById(Long id);
+
+    boolean remove(Specification<T> specification);
+
+    List<T> list(T entity);
+
 }
