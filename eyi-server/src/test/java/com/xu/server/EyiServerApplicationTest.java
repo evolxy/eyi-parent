@@ -2,6 +2,7 @@ package com.xu.server;
 
 import com.xu.server.admin.user.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
+import com.xu.server.base.enums.GenderEnum;
 import com.xu.server.base.util.QueryBuilderUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class EyiServerApplicationTest {
         user.setUsername("测试");
         user.setPassword("132131231332");
         user.setEmail("111111111111");
-        user.setGender(false);
+//        user.setGender(GenderEnum.MALE.gender);
         user.setIntroduce("1111");
         user.setExpire(false);
         user.setLocked(false);

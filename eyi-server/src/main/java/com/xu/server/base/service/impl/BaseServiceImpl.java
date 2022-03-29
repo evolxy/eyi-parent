@@ -48,7 +48,11 @@ public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseSer
 
     @Override
     public Page<T> page(int pageNo, int pageSize, T entity) {
-        return repository.findAll(QueryBuilderUtil.specificationBuild(entity), PageRequest.of(pageNo, pageSize));
+        if (entity!=null) {
+            return repository.findAll(QueryBuilderUtil.specificationBuild(entity), PageRequest.of(pageNo, pageSize));
+        } else {
+            return repository.findAll(PageRequest.of(pageNo, pageSize));
+        }
     }
 
     @Override
@@ -84,6 +88,10 @@ public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseSer
 
     @Override
     public List<T> list(T entity) {
-        return repository.findAll(QueryBuilderUtil.specificationBuild(entity));
+        if (entity!=null) {
+            return repository.findAll(QueryBuilderUtil.specificationBuild(entity));
+        } else {
+            return list();
+        }
     }
 }

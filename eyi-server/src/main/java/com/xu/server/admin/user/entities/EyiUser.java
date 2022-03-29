@@ -1,10 +1,10 @@
 package com.xu.server.admin.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xu.server.base.enums.GenderEnum;
 import com.xu.server.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +34,7 @@ public class EyiUser extends BaseEntity implements Serializable {
     private String email;
 
     @Column
-    private boolean gender;
+    private GenderEnum gender;
 
     @Column(length = 300)
     private String introduce;
