@@ -1,7 +1,8 @@
 package com.xu.server.admin.user.services;
 
-import com.xu.server.admin.user.entities.EyiUser;
-import com.xu.server.admin.user.vo.LoginUserVo;
+import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.vo.LoginUserVo;
+import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.IBaseService;
 
 /**
@@ -11,4 +12,6 @@ import com.xu.server.base.service.IBaseService;
  */
 public interface IUserInfoService extends IBaseService<EyiUser> {
     String login(LoginUserVo vo);
+
+    boolean logout(LoginUserBo loginUser);
 }

@@ -1,6 +1,6 @@
 package com.xu.server.admin.user.repository;
 
-import com.xu.server.admin.user.entities.EyiUser;
+import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.base.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
 

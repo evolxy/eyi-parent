@@ -1,8 +1,8 @@
-package com.xu.server.admin.user.entities;
+package com.xu.server.admin.user.pojo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xu.server.base.enums.GenderEnum;
-import com.xu.server.base.entity.BaseEntity;
+import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

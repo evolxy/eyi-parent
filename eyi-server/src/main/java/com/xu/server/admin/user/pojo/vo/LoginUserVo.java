@@ -1,4 +1,4 @@
-package com.xu.server.admin.user.vo;
+package com.xu.server.admin.user.pojo.vo;
 
 import lombok.Data;
 

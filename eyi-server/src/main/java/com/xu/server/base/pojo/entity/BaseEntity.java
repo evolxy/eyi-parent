@@ -1,4 +1,4 @@
-package com.xu.server.base.entity;
+package com.xu.server.base.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

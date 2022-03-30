@@ -1,10 +1,12 @@
 package com.xu.server.admin.user.controller;
 
 import com.xu.commons.result.Result;
-import com.xu.server.admin.user.entities.EyiUser;
+import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.services.IUserInfoService;
-import com.xu.server.admin.user.vo.LoginUserVo;
+import com.xu.server.admin.user.pojo.vo.LoginUserVo;
 import com.xu.server.base.controller.BaseController;
+import com.xu.server.base.pojo.bo.LoginUserBo;
+import com.xu.server.base.util.EyiLoginUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +32,12 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
     public Result<?> login(@RequestBody LoginUserVo vo) {
         String token = service.login(vo);
         return StringUtils.isNotBlank(token) ?Result.ok("登录成功").data(token):Result.failed("登录失败");
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation("登出")
+    public Result<?> logout() {
+        LoginUserBo loginUser = EyiLoginUserUtil.loginUser();
+        return service.logout(loginUser)?Result.ok("登出成功"):Result.failed("登出失败");
     }
 }

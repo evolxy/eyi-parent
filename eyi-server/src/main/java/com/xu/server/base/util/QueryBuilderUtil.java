@@ -1,6 +1,6 @@
 package com.xu.server.base.util;
 
-import com.xu.server.base.entity.BaseEntity;
+import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 

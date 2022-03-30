@@ -30,7 +30,7 @@ public class SwaggerConfig {
 
     private ApiInfo adminApiInfo() {
         return new ApiInfoBuilder()
-                .title("demo api 说明")
+                .title("Eyi Admin 接口文档")
                 .contact(new Contact("夜静月明","#","xu.yupeng@qq.com"))
                 .version("0.1")
                 .description("eyi admin")
@@ -49,7 +49,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("demo api 说明")
+                .title("Eyi Api 接口文档")
                 .contact(new Contact("夜静月明","#","xu.yupeng@qq.com"))
                 .version("0.1")
                 .description("eyi api")

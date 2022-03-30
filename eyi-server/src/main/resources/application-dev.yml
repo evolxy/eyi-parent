@@ -90,6 +90,7 @@ spring:
         min-idle: 0
         # 关闭超时时间
         shutdown-timeout: 10
+    database: 1
 
 sa-token:
   # token名称 (同时也是cookie名称)
