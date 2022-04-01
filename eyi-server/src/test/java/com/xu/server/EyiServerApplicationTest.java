@@ -1,18 +1,15 @@
 package com.xu.server;
 
-import com.xu.server.admin.user.entities.EyiUser;
+import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
-import com.xu.server.base.enums.GenderEnum;
 import com.xu.server.base.util.QueryBuilderUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.List;
 

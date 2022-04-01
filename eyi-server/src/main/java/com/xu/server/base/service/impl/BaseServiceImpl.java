@@ -57,7 +57,7 @@ public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseSer
 
     @Override
     public T getById(Long id) {
-        return repository.getById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

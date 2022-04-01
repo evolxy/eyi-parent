@@ -11,10 +11,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Properties;
 
 /**
  * @author Author
@@ -38,6 +37,20 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
     @ApiOperation("登出")
     public Result<?> logout() {
         LoginUserBo loginUser = EyiLoginUserUtil.loginUser();
-        return service.logout(loginUser)?Result.ok("登出成功"):Result.failed("登出失败");
+        if (null!=loginUser) {
+            service.logout(loginUser);
+        }
+        return null!=loginUser?Result.ok("登出成功"):Result.failed("未登录");
+    }
+
+    @GetMapping("/userInfo")
+    @ApiOperation("userInfo")
+    public Result<?> userInfo() {
+        LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
+        if (loginUserBo==null) {
+            return Result.failed("请登录");
+        } else {
+            return getById(loginUserBo.getId());
+        }
     }
 }

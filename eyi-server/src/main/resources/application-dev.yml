@@ -91,6 +91,14 @@ spring:
         # 关闭超时时间
         shutdown-timeout: 10
     database: 1
+  data:
+    mongodb:
+      database: eyi
+      username: eyi
+      password: 'eyiAdm$0524)'
+      host: localhost
+      port: 27019
+      authentication-database: eyi
 
 sa-token:
   # token名称 (同时也是cookie名称)

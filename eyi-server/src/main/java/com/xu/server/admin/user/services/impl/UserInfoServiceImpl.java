@@ -39,8 +39,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
     @Override
     @CacheEvict(key = "#loginUser.username")
     public boolean logout(LoginUserBo loginUser) {
-        assert loginUser != null;
-        if (StpUtil.isLogin()) {
+        if (loginUser!=null) {
             StpUtil.logout();
         }
         return true;
