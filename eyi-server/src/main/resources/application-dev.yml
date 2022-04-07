@@ -115,3 +115,9 @@ sa-token:
   token-style: random-64
   # 是否输出操作日志
   is-log: false
+#
+logging:
+  level:
+    org.hibernate.engine.spi.QueryParameters: debug
+    org.hibernate.engine.query.spi.HQLQueryPlan: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace

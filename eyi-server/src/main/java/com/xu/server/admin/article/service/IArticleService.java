@@ -1,7 +1,10 @@
 package com.xu.server.admin.article.service;
 
-import com.xu.server.admin.article.pojo.document.Article;
-import org.bson.types.ObjectId;
+import com.xu.commons.exception.EyiException;
+import com.xu.server.admin.article.pojo.document.ArticleDoc;
+import com.xu.server.admin.article.pojo.entity.Article;
+import com.xu.server.admin.article.pojo.vo.ArticleVo;
+import com.xu.server.base.service.IBaseService;
 
 /**
  * @author Author
@@ -9,10 +12,10 @@ import org.bson.types.ObjectId;
  * Created On 2022/4/1 13:49
  */
 
-public interface IArticleService {
-    Article save(Article article);
+public interface IArticleService extends IBaseService<Article> {
+    ArticleDoc save(ArticleVo article);
 
-    Article update(Article article);
+    ArticleDoc update(ArticleVo articleVo) throws EyiException;
 
-    boolean removeById(ObjectId id);
+    boolean removeById(Long id);
 }

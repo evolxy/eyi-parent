@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 /**
  * 文章标签
@@ -15,7 +17,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "eyi_artical_catalog")
+@Table(name = "eyi_catalog")
 @Data
 public class Catalog extends BaseEntity {
     private static final long serialVersionUID = 3737899427754241L;
@@ -24,4 +26,6 @@ public class Catalog extends BaseEntity {
 
     private String catalogCode;
 
+    @ManyToMany(mappedBy = "catalogs")
+    private List<Article> articles;
 }

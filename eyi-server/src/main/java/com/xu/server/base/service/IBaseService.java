@@ -36,6 +36,14 @@ public interface IBaseService<T> {
 
     boolean removeById(Long id);
 
+    boolean isExisted(Long id);
+
+    boolean isValid(Long id);
+
+    int logicRemoveById(Long id);
+
+    boolean logicRemove(Specification<T> specification);
+
     boolean remove(Specification<T> specification);
 
     List<T> list(T entity);

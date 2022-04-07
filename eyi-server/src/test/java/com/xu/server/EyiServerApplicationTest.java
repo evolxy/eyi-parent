@@ -33,7 +33,10 @@ public class EyiServerApplicationTest {
 
     @Test
     void test2() {
-        Page<EyiUser> all = repository.findAll(PageRequest.of(0,10));
+//        Page<EyiUser> all = repository.findAll(PageRequest.of(0,10));
+        int del = repository.logicDelById(518605471188258816L);
+        System.out.println("del "+ del);
+        EyiUser all = repository.findById(518605471188258816L).orElse(null);
 
         System.out.println(all);
     }

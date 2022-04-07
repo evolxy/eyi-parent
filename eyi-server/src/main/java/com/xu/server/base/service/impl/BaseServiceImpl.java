@@ -1,5 +1,6 @@
 package com.xu.server.base.service.impl;
 
+import com.xu.server.base.pojo.entity.BaseEntity;
 import com.xu.server.base.repository.BaseRepository;
 import com.xu.server.base.service.IBaseService;
 import com.xu.server.base.util.QueryBuilderUtil;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 0.1
  * Created On 2022/3/16 16:52
  */
-public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseService<T> {
+public class BaseServiceImpl<T extends BaseEntity, M extends BaseRepository<T>> implements IBaseService<T> {
     @Autowired
     protected M repository;
 
@@ -79,6 +80,29 @@ public class BaseServiceImpl<T, M extends BaseRepository<T>> implements IBaseSer
     public boolean removeById(Long id) {
         repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public boolean isExisted(Long id) {
+        // 存在 -> true 否则为false
+        return repository.findById(id).isEmpty();
+    }
+
+    @Override
+    public boolean isValid(Long id) {
+        // 存在且删除标记为0 为true  否则为false
+        T entity = repository.findById(id).orElse(null);
+        return entity != null && entity.getDelFlag() == 0;
+    }
+
+    @Override
+    public int logicRemoveById(Long id) {
+        return repository.logicDelById(id);
+    }
+
+    @Override
+    public boolean logicRemove(Specification<T> specification) {
+        return false;
     }
 
     @Override

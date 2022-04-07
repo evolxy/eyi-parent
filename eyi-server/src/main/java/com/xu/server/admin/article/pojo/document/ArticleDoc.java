@@ -18,10 +18,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Document("article")
-public class Article implements Serializable {
+public class ArticleDoc implements Serializable {
     private static final long serialVersionUID = 37378994277542961L;
 
-    public Article() {
+    public ArticleDoc() {
         LocalDateTime now = LocalDateTime.now();
         this.createTime = now;
         this.updateTime = now;
