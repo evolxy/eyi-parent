@@ -18,4 +18,6 @@ public interface IArticleService extends IBaseService<Article> {
     ArticleDoc update(ArticleVo articleVo) throws EyiException;
 
     boolean removeById(Long id);
+
+    ArticleDoc getById(String id);
 }

@@ -19,6 +19,12 @@ import java.time.LocalDateTime;
 @Data
 @MappedSuperclass
 public class BaseEntity implements Serializable {
+    public BaseEntity() {
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
+        this.delFlag = (byte) 0;
+    }
+
     @Transient
     private static final long serialVersionUID = 3737899427754241961L;
 

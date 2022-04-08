@@ -21,7 +21,9 @@ public class Article extends BaseEntity {
 
     private String subTitle;
 
-    @ManyToMany
+    private String title;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "eyi_article_catalog",schema = "eyi",
             joinColumns = {@JoinColumn(name = "articleId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "catalogId", referencedColumnName = "id")}

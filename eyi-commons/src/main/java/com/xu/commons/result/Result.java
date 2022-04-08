@@ -82,7 +82,7 @@ public class Result<T> {
         return this;
     }
 
-    private Result<T> msg(String msg) {
+    public Result<T> msg(String msg) {
         this.msg = msg;
         return this;
     }

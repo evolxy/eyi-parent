@@ -22,7 +22,7 @@ import java.util.Properties;
  */
 @RestController
 @Slf4j
-@RequestMapping("/eyi/user")
+@RequestMapping("/eyi/admin/user")
 @Api(value = "server-admin-用户管理", tags = "server-admin-用户管理")
 public class UserInfoController extends BaseController<EyiUser, IUserInfoService> {
 

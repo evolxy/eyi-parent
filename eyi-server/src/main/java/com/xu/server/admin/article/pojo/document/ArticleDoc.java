@@ -1,5 +1,7 @@
 package com.xu.server.admin.article.pojo.document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

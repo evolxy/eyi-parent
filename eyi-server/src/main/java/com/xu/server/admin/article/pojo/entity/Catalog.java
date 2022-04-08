@@ -1,5 +1,6 @@
 package com.xu.server.admin.article.pojo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,5 +28,6 @@ public class Catalog extends BaseEntity {
     private String catalogCode;
 
     @ManyToMany(mappedBy = "catalogs")
+    @JsonIgnore
     private List<Article> articles;
 }
