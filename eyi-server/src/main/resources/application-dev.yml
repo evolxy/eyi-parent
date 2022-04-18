@@ -121,3 +121,8 @@ logging:
     org.hibernate.engine.spi.QueryParameters: debug
     org.hibernate.engine.query.spi.HQLQueryPlan: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+eyi:
+  storage:
+    fdfs:
+      trackerServer: 114.117.165.130:22122
