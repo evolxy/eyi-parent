@@ -1,16 +1,23 @@
 package com.xu.server;
 
+import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.base.util.QueryBuilderUtil;
+import com.xu.server.storage.fdfs.services.impl.FdfsFileServiceImpl;
+import com.xu.server.storage.fdfs.utils.FdfsFileUtil;
+import org.csource.common.MyException;
+import org.csource.fastdfs.StorageClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -59,5 +66,62 @@ public class EyiServerApplicationTest {
         user.setDeleteId(0L);
         user.setUpdateId(0L);
         repository.save(user);
+    }
+
+    @Autowired
+    private StorageClient client;
+
+    @Test
+    void testUpload() {
+//        try {
+//            NameValuePair[] nvp = new NameValuePair[]{
+//                    new NameValuePair("age", "18"),
+//                    new NameValuePair("sex", "male"),
+//            };
+//            String[] pngs = client.upload_file("C:\\Users\\xu\\Pictures\\test.png", "png", nvp);
+//            System.out.println(Arrays.toString(pngs));
+//        } catch (IOException | MyException e) {
+//            e.printStackTrace();
+//        }
+        String[] uploadFile = FdfsFileUtil.uploadFile("C:\\Users\\xu\\Pictures\\test.png");
+        System.out.println(Arrays.toString(uploadFile));
+    }
+
+    @Test
+    void download() {
+        try {
+            byte[] bytes = client.download_file("group1", "M00/00/00/cnWlgmJdICiAC4C7AAAJioD2mYI625.png");
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\xu\\Pictures\\download.png");
+            fos.write(bytes);
+        } catch (IOException | MyException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Autowired
+    private FdfsFileServiceImpl impl;
+
+    @Test
+    void test5() {
+//        String save = impl.save("C:\\Users\\xu\\Pictures\\test.png");
+//        System.out.println(save);
+        File file = new File("C:\\Users\\xu\\Pictures\\test.png");
+        impl.save(file);
+    }
+
+    @Test
+    void testDelete() throws MyException {
+        String storage = "group1/M00/00/00/cnWlgmJdFYeADXvhAAAJioD2mYI104.png";
+        try {
+            int group1 = client.delete_file("group1", "M00/00/00/cnWlgmJdICiAC4C7AAAJioD2mYI625.png");
+            System.out.println("group 1 = "+ group1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void test21() {
+        System.out.println(TikaUtils.getContentTypeByExtension("txt"));
     }
 }

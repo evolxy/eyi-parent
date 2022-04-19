@@ -1,0 +1,123 @@
+server:
+  port: 12001
+
+spring:
+  mvc:
+    pathmatch:
+      # springboot2.6 使用path_pattern  但是 springfox 默认使用ant_path_matcher 导致启动不了
+      matching-strategy: ant_path_matcher
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://localhost:3316/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+      username: dba
+      password: 'Eyi$adM0524；'
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT1FROMDUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      # 配置DruidStatFilter
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # 配置DruidStatViewServlet
+      stat-view-servlet:
+        enabled: true
+        url-pattern: "/druid/*"
+        # IP白名单(没有配置或者为空，则允许所有访问)
+        #        allow: 127.0.0.1,192.168.*
+        # IP黑名单 (存在共同时，deny优先于allow)
+        #deny: 192.168.1.100
+        #  禁用HTML页面上的“Reset All”功能
+        reset-enable: false
+        # 登录名
+        login-username: admin
+        # 登录密码
+        login-password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      format_sql: true
+      use_sql_comments: true
+    open-in-view: false
+
+    main:
+      allow-bean-definition-overriding: true
+    data:
+      rest:
+        # 当前页码的参数名
+        page-param-name: current
+        # 分页大小
+        default-page-size: 10
+        # 每页记录数的参数名
+        limit-param-name: size
+        # 排序参数名
+        sort-param-name: sort
+        # 添加成功时是否返回添加内容
+        return-body-on-create: true
+        # 更新成功时是否返回更新内容
+        return-body-on-update: true
+  redis:
+    host: 127.0.0.1
+    port: 6380
+    password: 'Eyi$0524'
+    timeout: 10000
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 10000
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 关闭超时时间
+        shutdown-timeout: 10
+    database: 1
+  data:
+    mongodb:
+      database: eyi
+      username: eyi
+      password: 'eyiAdm$0524)'
+      host: localhost
+      port: 27019
+      authentication-database: eyi
+
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: eyi
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 3600
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: 1800
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: random-64
+  # 是否输出操作日志
+  is-log: false
+#
+logging:
+  level:
+    org.hibernate.engine.spi.QueryParameters: debug
+    org.hibernate.engine.query.spi.HQLQueryPlan: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace

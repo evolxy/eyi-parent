@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
   banner:
     location: classpath:banner.txt
 
@@ -13,3 +13,9 @@ logging:
     com.xu.server.**.reposity: trace
     org.hibernate.SQL: debug
     org.hibernate.engine.query.HQLQueryPlan: debug
+eyi:
+  storage:
+    fdfs:
+      tracker-server: 114.117.165.130:22122
+      # tracker.conf 中 http.server_port
+      http-tracker-http-port: 8080
