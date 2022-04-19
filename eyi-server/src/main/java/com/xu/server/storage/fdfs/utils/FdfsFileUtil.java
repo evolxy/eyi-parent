@@ -1,4 +1,4 @@
-package com.xu.server.storage.utils;
+package com.xu.server.storage.fdfs.utils;
 
 import com.xu.server.base.util.ApplicationContextUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +18,14 @@ import java.io.*;
 @Slf4j
 public class FdfsFileUtil {
     private static StorageClient storageClient;
+    public static final String trackerHost;
+    static {
+        initStorageClient();
+        trackerHost = storageClient.getTrackerServer().getInetSocketAddress().getHostName();
+    }
 
     /*  初始化  */
-    private static void initStorageClient() {
+    public static void initStorageClient() {
         if (storageClient==null) {
             FdfsFileUtil.storageClient = ApplicationContextUtil.getBean(StorageClient.class);
         }
@@ -37,7 +42,6 @@ public class FdfsFileUtil {
     }
 
     public static String[] uploadFile(String localPath, String fileExt, NameValuePair[] metaInfo) {
-        initStorageClient();
         File file = new File(localPath);
         if (!file.exists()) {
             log.error("请确定文件是否有效");
@@ -91,7 +95,6 @@ public class FdfsFileUtil {
     }
 
     public static String[] uploadFile(byte[] file, String fileExt, NameValuePair[] metaInfo) {
-        initStorageClient();
         String[] uploadFile = null;
         try {
             uploadFile = storageClient.upload_file(file, fileExt, metaInfo);
@@ -105,7 +108,6 @@ public class FdfsFileUtil {
 
     /*  下载 */
     public static byte[] downloadFile(String storePath) {
-        initStorageClient();
         if (storePath.startsWith("/")) {
             storePath = storePath.substring(1);
         }
@@ -134,7 +136,6 @@ public class FdfsFileUtil {
 
     /*  删除 */
     public static boolean deleteFile(String storePath) {
-        initStorageClient();
         if (storePath.startsWith("/")) {
             storePath = storePath.substring(1);
         }

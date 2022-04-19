@@ -125,4 +125,6 @@ logging:
 eyi:
   storage:
     fdfs:
-      trackerServer: 114.117.165.130:22122
+      tracker-server: 114.117.165.130:22122
+      # tracker.conf 中 http.server_port
+      http-tracker-http-port: 8080

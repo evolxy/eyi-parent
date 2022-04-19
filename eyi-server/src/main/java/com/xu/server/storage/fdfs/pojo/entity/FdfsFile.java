@@ -1,4 +1,4 @@
-package com.xu.server.storage.pojo.entity;
+package com.xu.server.storage.fdfs.pojo.entity;
 
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;

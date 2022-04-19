@@ -1,7 +1,7 @@
-package com.xu.server.storage.config;
+package com.xu.server.storage.fdfs.config;
 
 import com.xu.commons.exception.EyiException;
-import com.xu.server.storage.properties.FdfsProperties;
+import com.xu.server.storage.fdfs.properties.FdfsProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
 import org.csource.fastdfs.ClientGlobal;

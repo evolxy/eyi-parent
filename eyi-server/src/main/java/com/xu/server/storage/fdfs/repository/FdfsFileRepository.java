@@ -1,7 +1,7 @@
-package com.xu.server.storage.repository;
+package com.xu.server.storage.fdfs.repository;
 
 import com.xu.server.base.repository.BaseRepository;
-import com.xu.server.storage.pojo.entity.FdfsFile;
+import com.xu.server.storage.fdfs.pojo.entity.FdfsFile;
 import org.springframework.stereotype.Repository;
 
 /**
