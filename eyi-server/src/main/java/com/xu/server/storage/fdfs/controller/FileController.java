@@ -60,4 +60,10 @@ public class FileController {
     public Result<?> deleteFileById(@PathVariable Long id) {
         return fdfsFileService.removeById(id)?Result.ok("删除成功"):Result.failed("删除失败");
     }
+
+    @ApiOperation("分页查询")
+    @GetMapping("/page")
+    public Result<?> queryPage(@RequestParam int page, @RequestParam int size) {
+        return Result.ok(fdfsFileService.page(page, size));
+    }
 }

@@ -63,7 +63,7 @@ public class FdfsFileServiceImpl extends BaseServiceImpl<FdfsFile, FdfsFileRepos
         }
         String storePath = StringUtils.join(strings, '/');
         FdfsFile info = new FdfsFile();
-        info.setStorePath(storePath);
+        info.setStorePath(remoteAddress+storePath);
         String filename = file.getOriginalFilename();
         if (StringUtils.isBlank(filename)) {
             return null;

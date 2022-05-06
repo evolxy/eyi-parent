@@ -35,8 +35,8 @@ public class ArticleController {
     @ApiOperation("查询分页")
     public Result<?> getPageList(
             @RequestBody(required = false) Article article,
-            @RequestParam(defaultValue = "1") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize) {
+            @RequestParam(defaultValue = "1", name = "page") Integer pageNo,
+            @RequestParam(defaultValue = "10", name = "size") Integer pageSize) {
         Page<Article> articles = articleService.page(pageNo, pageSize, article);
         return Result.ok(articles);
     }

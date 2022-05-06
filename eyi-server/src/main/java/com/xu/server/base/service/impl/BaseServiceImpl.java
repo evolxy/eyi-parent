@@ -39,20 +39,20 @@ public class BaseServiceImpl<T extends BaseEntity, M extends BaseRepository<T>> 
 
     @Override
     public Page<T> page(int pageNo, int pageSize) {
-        return repository.findAll(PageRequest.of(pageNo, pageSize));
+        return repository.findAll(PageRequest.of(pageNo-1, pageSize));
     }
 
     @Override
     public Page<T> page(int pageNo, int pageSize, Sort sort) {
-        return repository.findAll(PageRequest.of(pageNo, pageSize, sort));
+        return repository.findAll(PageRequest.of(pageNo-1, pageSize, sort));
     }
 
     @Override
     public Page<T> page(int pageNo, int pageSize, T entity) {
         if (entity!=null) {
-            return repository.findAll(QueryBuilderUtil.specificationBuild(entity), PageRequest.of(pageNo, pageSize));
+            return repository.findAll(QueryBuilderUtil.specificationBuild(entity), PageRequest.of(pageNo-1, pageSize));
         } else {
-            return repository.findAll(PageRequest.of(pageNo, pageSize));
+            return repository.findAll(PageRequest.of(pageNo-1, pageSize));
         }
     }
 
