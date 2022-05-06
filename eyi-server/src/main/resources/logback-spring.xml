@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="10 seconds">
     <contextName>logback</contextName>
-    <property name="log.path" value="logs" />
+    <property name="log.path" value="${user.home}/logs" />
     <property name="CONSOLE_LOG_PATTERN"
               value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS} |) %highlight(%-5level |) %blue([%-4thread] |) %green(%-20.30logger |) %white(%msg%n)"/>
     <!--文件日志格式-->

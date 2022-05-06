@@ -12,7 +12,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://localhost:3316/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+      url: jdbc:mysql://114.117.165.130:3316/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
       username: dba
       password: 'Eyi$adM0524；'
       initialSize: 5
@@ -74,7 +74,7 @@ spring:
         # 更新成功时是否返回更新内容
         return-body-on-update: true
   redis:
-    host: 127.0.0.1
+    host: 114.117.165.130
     port: 6380
     password: 'Eyi$0524'
     timeout: 10000
@@ -96,7 +96,7 @@ spring:
       database: eyi
       username: eyi
       password: 'eyiAdm$0524)'
-      host: localhost
+      host: 114.117.165.130
       port: 27019
       authentication-database: eyi
 
@@ -116,8 +116,8 @@ sa-token:
   # 是否输出操作日志
   is-log: false
 #
-logging:
-  level:
-    org.hibernate.engine.spi.QueryParameters: debug
-    org.hibernate.engine.query.spi.HQLQueryPlan: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+#logging:
+#  level:
+#    org.hibernate.engine.spi.QueryParameters: debug
+#    org.hibernate.engine.query.spi.HQLQueryPlan: debug
+#    org.hibernate.type.descriptor.sql.BasicBinder: trace

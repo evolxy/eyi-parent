@@ -13,11 +13,33 @@ import com.xu.server.base.service.IBaseService;
  */
 
 public interface IArticleService extends IBaseService<Article> {
+    /**
+     * 保存
+     * @param article article
+     * @return article
+     */
     ArticleDoc save(ArticleVo article);
 
+    /**
+     * 更新
+     * @param articleVo article
+     * @return article
+     * @throws EyiException Exception
+     */
     ArticleDoc update(ArticleVo articleVo) throws EyiException;
 
+    /**
+     * 删除
+     * @param id id
+     * @return true | false
+     */
+    @Override
     boolean removeById(Long id);
 
+    /**
+     * 根据id获取文章详情
+     * @param id id
+     * @return art
+     */
     ArticleDoc getById(String id);
 }

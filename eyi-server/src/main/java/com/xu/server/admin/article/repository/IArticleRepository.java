@@ -11,5 +11,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IArticleRepository extends BaseRepository<Article> {
+    /**
+     * 根据id查询文章
+     * @param toHexString mongodb object id
+     * @param delFlag 删除标记
+     * @return article or null
+     */
     Article findByArticleIdAndDelFlag(String toHexString, byte delFlag);
 }

@@ -18,10 +18,10 @@ import java.io.*;
 @Slf4j
 public class FdfsFileUtil {
     private static StorageClient storageClient;
-    public static final String trackerHost;
+    public static final String TRACKER_HOST;
     static {
         initStorageClient();
-        trackerHost = storageClient.getTrackerServer().getInetSocketAddress().getHostName();
+        TRACKER_HOST = storageClient.getTrackerServer().getInetSocketAddress().getHostName();
     }
 
     /*  初始化  */
@@ -106,12 +106,13 @@ public class FdfsFileUtil {
 
     /* 上传 end */
 
-    /*  下载 */
+    /**  下载 */
     public static byte[] downloadFile(String storePath) {
-        if (storePath.startsWith("/")) {
+        String prefix = "/";
+        if (storePath.startsWith(prefix)) {
             storePath = storePath.substring(1);
         }
-        int groupIdx = storePath.indexOf("/");
+        int groupIdx = storePath.indexOf(prefix);
         String groupName = storePath.substring(0, groupIdx);
         String remotePath = storePath.substring(groupIdx + 1);
         byte[] bytes = null;
@@ -136,10 +137,11 @@ public class FdfsFileUtil {
 
     /*  删除 */
     public static boolean deleteFile(String storePath) {
-        if (storePath.startsWith("/")) {
+        String prefix = "/";
+        if (storePath.startsWith(prefix)) {
             storePath = storePath.substring(1);
         }
-        int groupIdx = storePath.indexOf("/");
+        int groupIdx = storePath.indexOf(prefix);
         String groupName = storePath.substring(0, groupIdx);
         String remotePath = storePath.substring(groupIdx + 1);
         int deleteFile = 0;

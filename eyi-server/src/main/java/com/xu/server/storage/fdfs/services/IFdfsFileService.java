@@ -20,6 +20,7 @@ public interface IFdfsFileService extends IBaseService<FdfsFile> {
 
     String save(MultipartFile file);
 
+    @Override
     boolean removeById(Long id);
 
     FdfsFileVo downloadFile(Long id);

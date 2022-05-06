@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 
 public enum GenderEnum {
+    /**
+     * 性别
+     */
     MALE(true, "男") , FEMALE(false, "女"),
     ;
     final boolean gender;

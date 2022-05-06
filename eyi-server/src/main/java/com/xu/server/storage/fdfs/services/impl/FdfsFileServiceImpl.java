@@ -23,7 +23,7 @@ public class FdfsFileServiceImpl extends BaseServiceImpl<FdfsFile, FdfsFileRepos
     private final String remoteAddress ;
 
     public FdfsFileServiceImpl(FdfsProperties fdfsProperties) {
-        remoteAddress = "http://"+FdfsFileUtil.trackerHost+":"+ fdfsProperties.getHttpTrackerHttpPort()+"/";
+        remoteAddress = "http://"+FdfsFileUtil.TRACKER_HOST +":"+ fdfsProperties.getHttpTrackerHttpPort()+"/";
     }
 
     @Override

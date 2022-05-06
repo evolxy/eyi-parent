@@ -6,6 +6,9 @@ package com.xu.commons.result;
  * Created On 2022/3/14 14:22
  */
 public enum ResultCode {
+    /**
+     * 成功
+     */
     FAILED(40000, "请求失败"),
     SUCCESS(20000, "请求成功");
     private final String msg;

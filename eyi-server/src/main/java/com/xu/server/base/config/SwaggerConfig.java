@@ -25,7 +25,8 @@ public class SwaggerConfig {
                 .apiInfo(adminApiInfo())
                 .groupName("eyi-admin")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.xu.server.admin")) //指定提供接口所在的基包
+                .apis(RequestHandlerSelectors.basePackage("com.xu.server.admin"))
+                //指定提供接口所在的基包
                 .build();
     }
 
@@ -45,7 +46,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .groupName("eyi-api ")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.xu.server.api")) //指定提供接口所在的基包
+                .apis(RequestHandlerSelectors.basePackage("com.xu.server.api"))
+                //指定提供接口所在的基包
                 .build();
     }
 
@@ -65,7 +67,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .groupName("eyi-store")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.xu.server.storage")) //指定提供接口所在的基包
+                .apis(RequestHandlerSelectors.basePackage("com.xu.server.storage"))
+                //指定提供接口所在的基包
                 .build();
     }
 

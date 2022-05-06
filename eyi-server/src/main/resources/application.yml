@@ -4,15 +4,7 @@ spring:
   banner:
     location: classpath:banner.txt
 
-  application:
-    verison: 1231
-# 日志
-logging:
-  level:
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-    com.xu.server.**.reposity: trace
-    org.hibernate.SQL: debug
-    org.hibernate.engine.query.HQLQueryPlan: debug
+
 eyi:
   storage:
     fdfs:
