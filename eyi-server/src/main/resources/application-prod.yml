@@ -56,23 +56,9 @@ spring:
       format_sql: true
       use_sql_comments: true
     open-in-view: false
+  main:
+    allow-bean-definition-overriding: true
 
-    main:
-      allow-bean-definition-overriding: true
-    data:
-      rest:
-        # 当前页码的参数名
-        page-param-name: current
-        # 分页大小
-        default-page-size: 10
-        # 每页记录数的参数名
-        limit-param-name: size
-        # 排序参数名
-        sort-param-name: sort
-        # 添加成功时是否返回添加内容
-        return-body-on-create: true
-        # 更新成功时是否返回更新内容
-        return-body-on-update: true
   redis:
     host: 114.117.165.130
     port: 6380
@@ -88,8 +74,8 @@ spring:
         max-idle: 8
         # 连接池中的最小空闲连接
         min-idle: 0
-        # 关闭超时时间
-        shutdown-timeout: 10
+      # 关闭超时时间
+      shutdown-timeout: 10
     database: 1
   data:
     mongodb:

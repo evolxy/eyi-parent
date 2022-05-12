@@ -10,7 +10,10 @@ public enum ResultCode {
      * 成功
      */
     FAILED(40000, "请求失败"),
+    NOT_PERMISSION(40001, "权限不足，请联系管理员授权!"),
     SUCCESS(20000, "请求成功");
+
+
     private final String msg;
     private final int code;
 

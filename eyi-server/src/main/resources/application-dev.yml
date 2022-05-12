@@ -57,22 +57,9 @@ spring:
       use_sql_comments: true
     open-in-view: false
 
-    main:
-      allow-bean-definition-overriding: true
-    data:
-      rest:
-        # 当前页码的参数名
-        page-param-name: current
-        # 分页大小
-        default-page-size: 10
-        # 每页记录数的参数名
-        limit-param-name: size
-        # 排序参数名
-        sort-param-name: sort
-        # 添加成功时是否返回添加内容
-        return-body-on-create: true
-        # 更新成功时是否返回更新内容
-        return-body-on-update: true
+  main:
+    allow-bean-definition-overriding: true
+
   redis:
     host: 127.0.0.1
     port: 6379
@@ -89,7 +76,7 @@ spring:
         # 连接池中的最小空闲连接
         min-idle: 0
         # 关闭超时时间
-        shutdown-timeout: 10
+      shutdown-timeout: 10
     database: 1
   data:
     mongodb:
@@ -99,7 +86,6 @@ spring:
       host: localhost
       port: 27019
       authentication-database: eyi
-
 sa-token:
   # token名称 (同时也是cookie名称)
   token-name: eyi
@@ -121,10 +107,3 @@ logging:
     org.hibernate.engine.spi.QueryParameters: debug
     org.hibernate.engine.query.spi.HQLQueryPlan: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
-
-eyi:
-  storage:
-    fdfs:
-      tracker-server: 114.117.165.130:22122
-      # tracker.conf 中 http.server_port
-      http-tracker-http-port: 8080

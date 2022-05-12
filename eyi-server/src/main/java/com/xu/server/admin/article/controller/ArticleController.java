@@ -34,7 +34,6 @@ public class ArticleController {
 
     @GetMapping("/page")
     @ApiOperation("查询分页")
-    @SaCheckRole("owner")
     public Result<?> getPageList(
             @RequestBody(required = false) Article article,
             @RequestParam(defaultValue = "1", name = "page") Integer pageNo,

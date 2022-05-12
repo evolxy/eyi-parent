@@ -5,12 +5,10 @@ import com.xu.server.base.enums.GenderEnum;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Author
@@ -47,4 +45,12 @@ public class EyiUser extends BaseEntity implements Serializable {
     @Column
     @JsonIgnore
     private boolean locked;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(name = "eyi_user_role",schema = "eyi",
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")}
+    )
+    List<EyiRole> roles;
 }
