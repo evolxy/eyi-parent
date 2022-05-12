@@ -124,4 +124,11 @@ public class EyiServerApplicationTest {
     void test21() {
         System.out.println(TikaUtils.getContentTypeByExtension("txt"));
     }
+
+
+    @Test
+    void test22() {
+
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.xu.server.admin.article.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.xu.commons.exception.EyiException;
 import com.xu.commons.result.Result;
 import com.xu.server.admin.article.pojo.document.ArticleDoc;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * Created On 2022/4/7 15:29
  */
 @RestController
-@RequestMapping("/eyi/admin/article")
+@RequestMapping("/admin/article")
 @Api(tags = "eyi-admin-文章管理")
 @AllArgsConstructor
 public class ArticleController {
@@ -33,6 +34,7 @@ public class ArticleController {
 
     @GetMapping("/page")
     @ApiOperation("查询分页")
+    @SaCheckRole("owner")
     public Result<?> getPageList(
             @RequestBody(required = false) Article article,
             @RequestParam(defaultValue = "1", name = "page") Integer pageNo,
@@ -43,6 +45,7 @@ public class ArticleController {
 
     @PostMapping("")
     @ApiOperation("保存")
+    @SaCheckRole("owner")
     public Result<?> save(@RequestBody ArticleVo articleVo) {
         ArticleDoc save = articleService.save(articleVo);
         return save.getId()!=null?Result.ok("保存成功"):Result.failed("保存失败");

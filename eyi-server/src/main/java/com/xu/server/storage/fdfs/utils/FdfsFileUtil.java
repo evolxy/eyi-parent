@@ -23,15 +23,15 @@ public class FdfsFileUtil {
         initStorageClient();
         TRACKER_HOST = storageClient.getTrackerServer().getInetSocketAddress().getHostName();
     }
-
-    /*  初始化  */
+    private static final String PREFIX = "/";
+    /**  初始化  */
     public static void initStorageClient() {
         if (storageClient==null) {
             FdfsFileUtil.storageClient = ApplicationContextUtil.getBean(StorageClient.class);
         }
     }
 
-    /* 上传  */
+    /** 上传  */
     public static String[] uploadFile(String localPath) {
         return uploadFile(new File(localPath));
     }
@@ -108,11 +108,11 @@ public class FdfsFileUtil {
 
     /**  下载 */
     public static byte[] downloadFile(String storePath) {
-        String prefix = "/";
-        if (storePath.startsWith(prefix)) {
+        
+        if (storePath.startsWith(PREFIX)) {
             storePath = storePath.substring(1);
         }
-        int groupIdx = storePath.indexOf(prefix);
+        int groupIdx = storePath.indexOf(PREFIX);
         String groupName = storePath.substring(0, groupIdx);
         String remotePath = storePath.substring(groupIdx + 1);
         byte[] bytes = null;
@@ -135,13 +135,13 @@ public class FdfsFileUtil {
     }
     /* 下载 end */
 
-    /*  删除 */
+    /**  删除 */
     public static boolean deleteFile(String storePath) {
-        String prefix = "/";
-        if (storePath.startsWith(prefix)) {
+        
+        if (storePath.startsWith(PREFIX)) {
             storePath = storePath.substring(1);
         }
-        int groupIdx = storePath.indexOf(prefix);
+        int groupIdx = storePath.indexOf(PREFIX);
         String groupName = storePath.substring(0, groupIdx);
         String remotePath = storePath.substring(groupIdx + 1);
         int deleteFile = 0;

@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
  * Created On 2022/3/28 10:21
  */
 
-//@Configuration
+@Configuration
 public class SaTokenConfig {
-//    @Autowired
+    @Autowired
     public void rewriteSaStrategy() {
         // 重写 Token 生成策略
         SaStrategy.me.createToken = (loginId, loginType) -> {

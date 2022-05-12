@@ -22,7 +22,7 @@ import java.util.Properties;
  */
 @RestController
 @Slf4j
-@RequestMapping("/eyi/admin/user")
+@RequestMapping("/admin/user")
 @Api(value = "server-admin-用户管理", tags = "server-admin-用户管理")
 public class UserInfoController extends BaseController<EyiUser, IUserInfoService> {
 
@@ -38,7 +38,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
     public Result<?> logout() {
         LoginUserBo loginUser = EyiLoginUserUtil.loginUser();
         if (null!=loginUser) {
-            service.logout(loginUser);
+            boolean logout = service.logout(loginUser);
         }
         return null!=loginUser?Result.ok("登出成功"):Result.failed("未登录");
     }

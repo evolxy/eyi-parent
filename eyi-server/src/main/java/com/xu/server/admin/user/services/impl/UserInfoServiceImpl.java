@@ -1,5 +1,6 @@
 package com.xu.server.admin.user.services.impl;
 
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.stp.StpUtil;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
@@ -30,6 +31,9 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
         String password = vo.getPassword();
         byte delFlag = 0;
         EyiUser user = repository.findByUsernameAndDelFlag(username, delFlag);
+        if (user==null) {
+            throw new SaTokenException("用户不存在");
+        }
         if (password.equals(user.getPassword())) {
             StpUtil.login(user.getId());
         }

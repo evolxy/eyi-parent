@@ -11,5 +11,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserInfoRepository extends BaseRepository<EyiUser> {
+    /**
+     * 查询用户
+     * @param username 用户名
+     * @param delFlag 删除标记
+     * @return user
+     */
     EyiUser findByUsernameAndDelFlag(String username, byte delFlag);
 }
