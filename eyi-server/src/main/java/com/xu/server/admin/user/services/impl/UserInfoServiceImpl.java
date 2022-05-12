@@ -1,6 +1,7 @@
 package com.xu.server.admin.user.services.impl;
 
 import cn.dev33.satoken.exception.SaTokenException;
+import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
 import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
@@ -40,7 +41,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
         if (user==null) {
             throw new SaTokenException("用户不存在");
         }
-        if (password.equals(user.getPassword())) {
+        if (BCrypt.checkpw(password, user.getPassword())) {
             StpUtil.login(user.getId());
         }
         return StpUtil.getTokenValue();

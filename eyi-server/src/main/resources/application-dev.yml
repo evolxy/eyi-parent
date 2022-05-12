@@ -101,6 +101,8 @@ sa-token:
   token-style: random-64
   # 是否输出操作日志
   is-log: false
+  # 自动续签
+  auto-renew: true
 #
 logging:
   level:

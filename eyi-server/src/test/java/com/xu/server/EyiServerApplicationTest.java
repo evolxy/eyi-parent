@@ -1,5 +1,6 @@
 package com.xu.server;
 
+import cn.dev33.satoken.secure.BCrypt;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
