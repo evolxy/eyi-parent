@@ -105,18 +105,18 @@
     <build>
         <finalName>app</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.6.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <version>2.6.4</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <!--     生成jar       -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -187,7 +187,7 @@
                             </includes>
                         </resource>
                     </resources>
-                    <outputDirectory>${project.build.directory}/config</outputDirectory>
+                    <outputDirectory>${project.build.directory}/resources</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
