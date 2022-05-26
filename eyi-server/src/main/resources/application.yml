@@ -6,6 +6,21 @@ spring:
   mvc:
     servlet:
       path: /eyi
+  mail:
+    host: smtp.qq.com
+    port: 465
+    protocol: smtps
+    username: eyi.adm@qq.com
+    password: cxtbzwhlbxydebia
+    default-encoding: UTF-8
+    properties:
+      from: ${spring.mail.username}
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 eyi:
   storage:

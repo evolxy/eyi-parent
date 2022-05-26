@@ -5,6 +5,8 @@ import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.base.util.QueryBuilderUtil;
+import com.xu.server.email.pojo.EmailInfo;
+import com.xu.server.email.service.EmailService;
 import com.xu.server.storage.fdfs.services.impl.FdfsFileServiceImpl;
 import com.xu.server.storage.fdfs.utils.FdfsFileUtil;
 import org.csource.common.MyException;
@@ -19,7 +21,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Author
@@ -127,9 +131,11 @@ public class EyiServerApplicationTest {
     }
 
 
+    @Autowired
+    private EmailService es;
     @Test
     void test22() {
-
-
+        Map<String, Object> params = new HashMap<>();
+        es.sendMailByTemplate(params, new EmailInfo("1254226073@qq.com", "测试"), "email/TestTemplate.ftlh");
     }
 }

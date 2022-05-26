@@ -40,7 +40,15 @@ public class ArticleDoc implements Serializable {
      */
     private String subTitle;
 
+    /**
+     * 编译后的h5
+     */
     private String content;
+
+    /**
+     * 原生markdown
+     */
+    private String mdContent;
 
     private LocalDateTime createTime;
 
