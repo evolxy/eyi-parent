@@ -6,6 +6,9 @@ import org.apache.tika.mime.MimeType;
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * @author Author
  * @version 0.1
@@ -34,5 +37,18 @@ public class TikaUtils {
 			log.error(e.getMessage(), e);
 		}
 		return res;
+	}
+
+	public static String getContentType(InputStream is) {
+		if (is==null) {
+			return "";
+		}
+		Tika tika = new Tika();
+		try {
+			return tika.detect(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

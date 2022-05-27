@@ -9,6 +9,12 @@ import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
 import com.xu.server.storage.fdfs.services.impl.FdfsFileServiceImpl;
 import com.xu.server.storage.fdfs.utils.FdfsFileUtil;
+import com.xu.server.storage.minio.utils.MinioUtils;
+import io.minio.*;
+import io.minio.errors.*;
+import io.minio.messages.*;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
 import org.csource.fastdfs.StorageClient;
 import org.junit.jupiter.api.Test;
@@ -17,19 +23,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Author
  * @version 0.1
  * Created On 2022/3/22 15:20
  */
+@Slf4j
 @SpringBootTest
 public class EyiServerApplicationTest {
     @Autowired
@@ -137,5 +149,127 @@ public class EyiServerApplicationTest {
     void test22() {
         Map<String, Object> params = new HashMap<>();
         es.sendMailByTemplate(params, new EmailInfo("1254226073@qq.com", "测试"), "email/TestTemplate.ftlh");
+    }
+
+
+    @Test
+    void test23() {
+        MinioClient client =
+                MinioClient.builder()
+                        .endpoint("http://localhost:19099")
+                        .credentials("admin", "@eyi0524")
+                        .build();
+        try {
+            // 判断是桶是否存在
+            BucketExistsArgs args = BucketExistsArgs.builder().bucket("ces").build();
+            boolean bucketExists = client.bucketExists(args);
+            if (!bucketExists) {
+                // 创建桶
+                MakeBucketArgs buildArgs = MakeBucketArgs.builder()
+                        .bucket("ces").objectLock(true)
+                        .build();
+                client.makeBucket(buildArgs);
+            }
+
+            // 设置桶标签
+            Map<String, String > tags = new HashMap<>();
+            tags.put("title", "测试");
+            tags.put("updateTime", LocalDateTime.now().toString());
+            SetBucketTagsArgs tagsArgs = SetBucketTagsArgs.builder()
+                    .bucket("ces")
+                    .tags(tags)
+                    .build();
+            client.setBucketTags(tagsArgs);
+            // 设置桶版本
+            VersioningConfiguration versionConfig = new VersioningConfiguration(VersioningConfiguration.Status.ENABLED, true);
+            SetBucketVersioningArgs versioningArgs = SetBucketVersioningArgs.builder()
+                    .bucket("ces")
+                    .config(versionConfig)
+                    .build();
+            client.setBucketVersioning(versioningArgs);
+            // 设置Object-Lock https://docs.min.io/minio/baremetal/object-retention/minio-object-locking.html
+            // 锁定的对象 只有超过设定的日期 才会真正删除
+            ObjectLockConfiguration objectLockConfiguration =
+                    new ObjectLockConfiguration(RetentionMode.COMPLIANCE, new RetentionDurationDays(1));
+            SetObjectLockConfigurationArgs objectRetentionArgs = SetObjectLockConfigurationArgs.builder()
+                    .config(objectLockConfiguration).bucket("ces").build();
+            client.setObjectLockConfiguration(objectRetentionArgs);
+
+            // 删除桶
+//            RemoveBucketArgs removeArgs = RemoveBucketArgs.builder()
+//                    .bucket("ces")
+//                    .build();
+//            client.removeBucket(removeArgs);
+
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | XmlParserException | ServerException | NoSuchAlgorithmException | IOException | InvalidResponseException | InvalidKeyException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SneakyThrows
+    @Test
+    void test24() {
+//        System.out.println(MinioUtils.getObjectUrl());
+//        FileInputStream fis = new FileInputStream("D:\\env\\xu\\eyi-parent\\eyi-server\\src\\main\\resources\\application.yml");
+//        MinioUtils.uploadObject("ces", "application.yml", fis);
+//        System.out.println(MinioUtils.getObjectUrl("ces", "test.png", -1, TimeUnit.DAYS));
+        MinioClient client =
+                MinioClient.builder()
+                        .endpoint("http://localhost:19099")
+                        .credentials("admin", "@eyi0524")
+                        .build();
+        try {
+            String config = "{\n" +
+                    "    \"Version\":\"2012-10-17\",\n" +
+                    "    \"Statement\":[\n" +
+                    "        {\n" +
+                    "            \"Effect\":\"Allow\",\n" +
+                    "            \"Principal\":{\n" +
+                    "                \"AWS\":[\n" +
+                    "                    \"*\"\n" +
+                    "                ]\n" +
+                    "            },\n" +
+                    "            \"Action\":[\n" +
+                    "                \"s3:GetBucketLocation\",\n" +
+                    "                \"s3:ListBucket\",\n" +
+                    "                \"s3:ListBucketMultipartUploads\"\n" +
+                    "            ],\n" +
+                    "            \"Resource\":[\n" +
+                    "                \"arn:aws:s3:::ces2\"\n" +
+                    "            ]\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "            \"Effect\":\"Allow\",\n" +
+                    "            \"Principal\":{\n" +
+                    "                \"AWS\":[\n" +
+                    "                    \"*\"\n" +
+                    "                ]\n" +
+                    "            },\n" +
+                    "            \"Action\":[\n" +
+                    "                \"s3:ListMultipartUploadParts\",\n" +
+                    "                \"s3:PutObject\",\n" +
+                    "                \"s3:AbortMultipartUpload\",\n" +
+                    "                \"s3:DeleteObject\",\n" +
+                    "                \"s3:GetObject\"\n" +
+                    "            ],\n" +
+                    "            \"Resource\":[\n" +
+                    "                \"arn:aws:s3:::ces2/*\"\n" +
+                    "            ]\n" +
+                    "        }\n" +
+                    "    ]\n" +
+                    "}";
+            SetBucketPolicyArgs policyArgs = SetBucketPolicyArgs.builder()
+                    .bucket("ces2")
+                    .config(config)
+                    .build();
+            client.setBucketPolicy(policyArgs);
+            GetBucketPolicyArgs get = GetBucketPolicyArgs.builder()
+                    .bucket("ces2")
+                    .build();
+            System.out.println("BucketPolicy " + client.getBucketPolicy(get));
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
+            log.error(e.getMessage(), e);
+
+        }
     }
 }
