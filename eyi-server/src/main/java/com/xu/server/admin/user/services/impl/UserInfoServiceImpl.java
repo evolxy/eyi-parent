@@ -56,6 +56,11 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
         return true;
     }
 
+    @Override
+    public String getCode() {
+        return null;
+    }
+
     @SneakyThrows
     @Override
     public List<String> getPermissionList(Object id, String loginType) {

@@ -4,7 +4,9 @@ import cn.dev33.satoken.secure.BCrypt;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
+import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.util.QueryBuilderUtil;
+import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
 import com.xu.server.storage.fdfs.services.impl.FdfsFileServiceImpl;
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,10 +33,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -271,5 +271,17 @@ public class EyiServerApplicationTest {
             log.error(e.getMessage(), e);
 
         }
+    }
+
+    @Autowired
+    private RedisTemplate<String, Object> template;
+
+    @Test
+    void test25() {
+        LoginUserBo userBo = new LoginUserBo();
+        userBo.setEmail("test@qq.com");
+        userBo.setUsername("ces");
+        RedisUtils.setTemplate(template);
+        RedisUtils.set(UUID.randomUUID().toString(), userBo, 1000);
     }
 }

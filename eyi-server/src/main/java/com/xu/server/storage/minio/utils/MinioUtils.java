@@ -1,6 +1,7 @@
 package com.xu.server.storage.minio.utils;
 
 import com.xu.commons.utils.TikaUtils;
+import com.xu.server.base.util.ApplicationContextUtil;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
@@ -28,10 +29,7 @@ public class MinioUtils {
 	private static final MinioClient CLIENT;
 
 	static {
-		CLIENT = MinioClient.builder()
-				.endpoint("http://localhost:19099")
-				.credentials("admin", "@eyi0524")
-				.build();
+		CLIENT = ApplicationContextUtil.getBean(MinioClient.class);
 	}
 
 	public static boolean bucketExists(String bucketName) {
@@ -142,7 +140,7 @@ public class MinioUtils {
 
 	}
 
-	public static void uploadObject(String bucketName, String filename, InputStream is) {
+	public static String uploadObject(String bucketName, String filename, InputStream is) {
 		if (!bucketExists(bucketName)) {
 			createBucket(bucketName, false);
 		}
@@ -154,11 +152,10 @@ public class MinioUtils {
 					.contentType(TikaUtils.getContentTypeByFileName(filename))
 					.build();
 			CLIENT.putObject(putObjectArgs);
-			String url = getObjectUrl(bucketName, filename);
-			System.out.println("file access url " + url);
+			return "http://localhost:19099/"+bucketName+"/"+filename;
 		} catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
 			log.error(e.getMessage(), e);
-
+			return "";
 		}
 	}
 }

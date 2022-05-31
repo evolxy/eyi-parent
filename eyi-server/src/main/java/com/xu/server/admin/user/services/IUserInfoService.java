@@ -25,4 +25,10 @@ public interface IUserInfoService extends IBaseService<EyiUser>, StpInterface {
      * @return ture|false
      */
     boolean logout(LoginUserBo loginUser);
+
+    /**
+     * 获取图片验证码 并将图片验证码存入redis中备用
+     * @return 验证码
+     */
+    String getCode();
 }
