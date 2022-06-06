@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -22,20 +23,7 @@ import java.time.temporal.ChronoUnit;
  */
 @Configuration
 @EnableCaching
-public class RedisCacheConfig {
-//    @Bean
-//    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory, RedisSerializer<String> stringRedisSerializer, RedisSerializer<Object> valueSerializer) {
-//        RedisTemplate<String, Object> template = new RedisTemplate<>();
-//        template.setConnectionFactory(factory);
-//        template.setKeySerializer(stringRedisSerializer);
-//        template.setHashKeySerializer(stringRedisSerializer);
-//
-//        template.setValueSerializer(valueSerializer);
-//        template.setHashValueSerializer(valueSerializer);
-//
-//        template.afterPropertiesSet();
-//        return template;
-//    }
+public class RedisConfig {
 
     @Bean
     public RedisSerializer<String> stringRedisSerializer() {
@@ -49,6 +37,7 @@ public class RedisCacheConfig {
 
     @Bean
     public CacheManager redisCacheManager(RedisConnectionFactory factory) {
+        // redis 缓存 键值格式化
         RedisCacheConfiguration configuration = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .entryTtl(Duration.of(1, ChronoUnit.HOURS))
@@ -56,5 +45,20 @@ public class RedisCacheConfig {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer()));
 
         return RedisCacheManager.builder(factory).cacheDefaults(configuration).build();
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory, RedisSerializer<String> stringRedisSerializer, RedisSerializer<Object> valueSerializer) {
+        // redisTemplate 键值格式化
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        template.setKeySerializer(stringRedisSerializer);
+        template.setHashKeySerializer(stringRedisSerializer);
+
+        template.setValueSerializer(valueSerializer);
+        template.setHashValueSerializer(valueSerializer);
+
+        template.afterPropertiesSet();
+        return template;
     }
 }

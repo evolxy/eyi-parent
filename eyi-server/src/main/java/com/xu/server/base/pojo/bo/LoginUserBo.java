@@ -3,6 +3,8 @@ package com.xu.server.base.pojo.bo;
 import com.xu.server.base.enums.GenderEnum;
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * @author Author
  * @version 0.1
@@ -13,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class LoginUserBo {
+public class LoginUserBo implements Serializable {
     private Long id;
     private String username;
     private GenderEnum gender;

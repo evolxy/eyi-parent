@@ -29,7 +29,7 @@ eyi:
       # tracker.conf 中 http.server_port
       http-tracker-http-port: 8080
     minio:
-      endpoint: http://localhost:19099
+      endpoint: http://arm.xuyupeng.top:19099
       username: admin
       password: '@eyi0524'
 logging:

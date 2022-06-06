@@ -1,20 +1,20 @@
 package com.xu.server;
 
-import cn.dev33.satoken.secure.BCrypt;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
-import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.util.QueryBuilderUtil;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
 import com.xu.server.storage.fdfs.services.impl.FdfsFileServiceImpl;
 import com.xu.server.storage.fdfs.utils.FdfsFileUtil;
-import com.xu.server.storage.minio.utils.MinioUtils;
 import io.minio.*;
 import io.minio.errors.*;
-import io.minio.messages.*;
+import io.minio.messages.ObjectLockConfiguration;
+import io.minio.messages.RetentionDurationDays;
+import io.minio.messages.RetentionMode;
+import io.minio.messages.VersioningConfiguration;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
@@ -26,15 +26,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Author
@@ -274,14 +271,22 @@ public class EyiServerApplicationTest {
     }
 
     @Autowired
-    private RedisTemplate<String, Object> template;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Test
     void test25() {
-        LoginUserBo userBo = new LoginUserBo();
+//        template.opsForValue().set("1", "2");
+        EyiUser userBo = new EyiUser();
         userBo.setEmail("test@qq.com");
         userBo.setUsername("ces");
-        RedisUtils.setTemplate(template);
-        RedisUtils.set(UUID.randomUUID().toString(), userBo, 1000);
+        RedisUtils.setTemplate(redisTemplate);
+        RedisUtils.setExpiredValue("user::"+ UUID.randomUUID(), userBo);
+    }
+
+
+    @Test
+    void test26() {
+        RedisUtils.setTemplate(redisTemplate);
+        System.out.println(RedisUtils.get("fec000fe-a030-43fe-be1d-626e28c54e29"));
     }
 }

@@ -131,7 +131,7 @@
 
     <!--生产 环境-->
     <springProfile name="prod">
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="WARN_FILE" />
             <appender-ref ref="ERROR_FILE" />
