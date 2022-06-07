@@ -1,4 +1,4 @@
-package com.xu.server.storage.fdfs.utils;
+package com.xu.server.base.util;
 
 import java.io.File;
 import java.io.FileInputStream;

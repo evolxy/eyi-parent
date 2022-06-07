@@ -1,7 +1,5 @@
 package com.xu.server.admin.article.pojo.document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +34,7 @@ public class ArticleDoc implements Serializable {
     private String title;
 
     /**
-     * 副标题
+     * 副标题/简介 长度限制在100字
      */
     private String subTitle;
 

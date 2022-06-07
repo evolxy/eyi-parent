@@ -1,4 +1,4 @@
-package com.xu.server.storage.minio.utils;
+package com.xu.server.storage.utils;
 
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.base.util.ApplicationContextUtil;
@@ -152,7 +152,7 @@ public class MinioUtils {
 					.contentType(TikaUtils.getContentTypeByFileName(filename))
 					.build();
 			CLIENT.putObject(putObjectArgs);
-			return "http://localhost:19099/"+bucketName+"/"+filename;
+			return getObjectUrl(bucketName, filename);
 		} catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
 			log.error(e.getMessage(), e);
 			return "";

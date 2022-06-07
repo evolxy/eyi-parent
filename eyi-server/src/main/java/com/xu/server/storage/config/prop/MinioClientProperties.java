@@ -1,4 +1,4 @@
-package com.xu.server.storage.minio.config;
+package com.xu.server.storage.config.prop;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

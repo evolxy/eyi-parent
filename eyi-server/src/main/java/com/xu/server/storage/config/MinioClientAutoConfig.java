@@ -1,7 +1,9 @@
-package com.xu.server.storage.minio.config;
+package com.xu.server.storage.config;
 
+import com.xu.server.storage.config.prop.MinioClientProperties;
 import io.minio.MinioClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(MinioClientProperties.class)
+@Slf4j
+@ConditionalOnProperty(prefix = "eyi.storage", name = "client", havingValue = "MINIO")
 public class MinioClientAutoConfig {
 	private final MinioClientProperties properties;
 
@@ -23,6 +27,7 @@ public class MinioClientAutoConfig {
 
 	@Bean
 	public MinioClient minioClient() {
+		log.error("Minio client 有效");
 		return MinioClient.builder()
 				.endpoint(properties.getEndpoint())
 				.credentials(properties.getUsername(), properties.getPassword())

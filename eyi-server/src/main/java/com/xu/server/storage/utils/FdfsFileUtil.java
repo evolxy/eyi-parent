@@ -1,4 +1,4 @@
-package com.xu.server.storage.fdfs.utils;
+package com.xu.server.storage.utils;
 
 import com.xu.server.base.util.ApplicationContextUtil;
 import lombok.extern.slf4j.Slf4j;

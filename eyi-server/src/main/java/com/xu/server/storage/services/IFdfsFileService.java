@@ -1,8 +1,8 @@
-package com.xu.server.storage.fdfs.services;
+package com.xu.server.storage.services;
 
 import com.xu.server.base.service.IBaseService;
-import com.xu.server.storage.fdfs.pojo.entity.FdfsFile;
-import com.xu.server.storage.fdfs.pojo.vo.FdfsFileVo;
+import com.xu.server.storage.pojo.entity.FileInfo;
+import com.xu.server.storage.pojo.vo.FileVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -13,7 +13,7 @@ import java.io.File;
  * Created On 2022/4/18 15:46
  */
 
-public interface IFdfsFileService extends IBaseService<FdfsFile> {
+public interface IFdfsFileService extends IBaseService<FileInfo> {
     /**
      * 保存本地文件
      * @param localPath 本地文件位置
@@ -48,7 +48,7 @@ public interface IFdfsFileService extends IBaseService<FdfsFile> {
      * @param id id
      * @return true|false
      */
-    FdfsFileVo downloadFile(Long id);
+    FileVo downloadFile(Long id);
 
     /**
      * 下载文件到本地

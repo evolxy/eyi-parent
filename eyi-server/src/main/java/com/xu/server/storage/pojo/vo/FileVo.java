@@ -1,4 +1,4 @@
-package com.xu.server.storage.fdfs.pojo.vo;
+package com.xu.server.storage.pojo.vo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FdfsFileVo {
+public class FileVo {
     private byte[] content;
 
     private String filename;

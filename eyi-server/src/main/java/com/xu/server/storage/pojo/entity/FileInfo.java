@@ -1,4 +1,4 @@
-package com.xu.server.storage.fdfs.pojo.entity;
+package com.xu.server.storage.pojo.entity;
 
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.io.File;
 @Entity
 @Data
 @NoArgsConstructor
-public class FdfsFile extends BaseEntity {
+public class FileInfo extends BaseEntity {
     private static final long serialVersionUID = 373789942775421L;
 
     private String originName;
@@ -29,7 +29,7 @@ public class FdfsFile extends BaseEntity {
 
     private String extension;
 
-    public FdfsFile(String localPath, String storePath) {
+    public FileInfo(String localPath, String storePath) {
         int originNameIdx = localPath.lastIndexOf(File.separator);
         int extensionIdx = localPath.lastIndexOf(".");
 

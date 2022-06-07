@@ -24,6 +24,7 @@ spring:
 
 eyi:
   storage:
+    client: MINIO
     fdfs:
       tracker-server: 114.117.165.130:22122
       # tracker.conf 中 http.server_port

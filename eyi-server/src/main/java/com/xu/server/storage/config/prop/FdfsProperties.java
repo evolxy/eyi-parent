@@ -1,4 +1,4 @@
-package com.xu.server.storage.fdfs.properties;
+package com.xu.server.storage.config.prop;
 
 import com.xu.commons.exception.EyiException;
 import lombok.Data;

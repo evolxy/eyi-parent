@@ -1,7 +1,7 @@
-package com.xu.server.storage.fdfs.repository;
+package com.xu.server.storage.repository;
 
 import com.xu.server.base.repository.BaseRepository;
-import com.xu.server.storage.fdfs.pojo.entity.FdfsFile;
+import com.xu.server.storage.pojo.entity.FileInfo;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * Created On 2022/4/18 15:45
  */
 @Repository
-public interface FdfsFileRepository extends BaseRepository<FdfsFile> {
+public interface FileInfoRepository extends BaseRepository<FileInfo> {
 }

@@ -7,8 +7,8 @@ import com.xu.server.base.util.QueryBuilderUtil;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
-import com.xu.server.storage.fdfs.services.impl.FdfsFileServiceImpl;
-import com.xu.server.storage.fdfs.utils.FdfsFileUtil;
+import com.xu.server.storage.utils.FdfsFileUtil;
+import com.xu.server.storage.utils.MinioUtils;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.ObjectLockConfiguration;
@@ -17,16 +17,12 @@ import io.minio.messages.RetentionMode;
 import io.minio.messages.VersioningConfiguration;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.csource.common.MyException;
-import org.csource.fastdfs.StorageClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -82,8 +78,8 @@ public class EyiServerApplicationTest {
         repository.save(user);
     }
 
-    @Autowired
-    private StorageClient client;
+//    @Autowired
+//    private StorageClient client;
 
     @Test
     void testUpload() {
@@ -101,38 +97,38 @@ public class EyiServerApplicationTest {
         System.out.println(Arrays.toString(uploadFile));
     }
 
-    @Test
-    void download() {
-        try {
-            byte[] bytes = client.download_file("group1", "M00/00/00/cnWlgmJdICiAC4C7AAAJioD2mYI625.png");
-            FileOutputStream fos = new FileOutputStream("C:\\Users\\xu\\Pictures\\download.png");
-            fos.write(bytes);
-        } catch (IOException | MyException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    void download() {
+//        try {
+//            byte[] bytes = client.download_file("group1", "M00/00/00/cnWlgmJdICiAC4C7AAAJioD2mYI625.png");
+//            FileOutputStream fos = new FileOutputStream("C:\\Users\\xu\\Pictures\\download.png");
+//            fos.write(bytes);
+//        } catch (IOException | MyException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    @Autowired
-    private FdfsFileServiceImpl impl;
+//    @Autowired
+//    private FdfsFileServiceImpl impl;
 
-    @Test
-    void test5() {
-//        String save = impl.save("C:\\Users\\xu\\Pictures\\test.png");
-//        System.out.println(save);
-        File file = new File("C:\\Users\\xu\\Pictures\\test.png");
-        impl.save(file);
-    }
+//    @Test
+//    void test5() {
+////        String save = impl.save("C:\\Users\\xu\\Pictures\\test.png");
+////        System.out.println(save);
+//        File file = new File("C:\\Users\\xu\\Pictures\\test.png");
+//        impl.save(file);
+//    }
 
-    @Test
-    void testDelete() throws MyException {
-        String storage = "group1/M00/00/00/cnWlgmJdFYeADXvhAAAJioD2mYI104.png";
-        try {
-            int group1 = client.delete_file("group1", "M00/00/00/cnWlgmJdICiAC4C7AAAJioD2mYI625.png");
-            System.out.println("group 1 = "+ group1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    void testDelete() throws MyException {
+//        String storage = "group1/M00/00/00/cnWlgmJdFYeADXvhAAAJioD2mYI104.png";
+//        try {
+//            int group1 = client.delete_file("group1", "M00/00/00/cnWlgmJdICiAC4C7AAAJioD2mYI625.png");
+//            System.out.println("group 1 = "+ group1);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Test
     void test21() {
@@ -288,5 +284,12 @@ public class EyiServerApplicationTest {
     void test26() {
         RedisUtils.setTemplate(redisTemplate);
         System.out.println(RedisUtils.get("fec000fe-a030-43fe-be1d-626e28c54e29"));
+    }
+
+    @Test
+    void test27() {
+        String url = MinioUtils.getObjectUrl("test", "test.png");
+        System.out.println(url.substring(0, url.indexOf("?")));
+        System.out.println(url);
     }
 }

@@ -1,13 +1,14 @@
-package com.xu.server.storage.fdfs.config;
+package com.xu.server.storage.config;
 
 import com.xu.commons.exception.EyiException;
-import com.xu.server.storage.fdfs.properties.FdfsProperties;
+import com.xu.server.storage.config.prop.FdfsProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
 import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ import java.util.Properties;
 @EnableConfigurationProperties(FdfsProperties.class)
 @Configuration
 @Slf4j
+@ConditionalOnProperty(prefix = "eyi.storage", name = "client", havingValue = "FDFS")
 public class FdfsAutoConfig {
 
     public FdfsAutoConfig(FdfsProperties properties) {
@@ -32,6 +34,7 @@ public class FdfsAutoConfig {
             prop = properties.covertToFdfsConfig();
             ClientGlobal.initByProperties(prop);
             log.info(" ClientGlobal.configInfo() \n {}", ClientGlobal.configInfo());
+            log.debug("Storage Sever is FDFS address = {}", properties.getTrackerServer());
         } catch (EyiException | MyException | IOException e) {
             e.printStackTrace();
         }
