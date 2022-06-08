@@ -8,13 +8,13 @@ spring:
       matching-strategy: ant_path_matcher
   config:
     activate:
-      on-profile: prod
+      on-profile: arm
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://114.117.165.130:3316/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
-      username: dba
-      password: 'Eyi$adM0524；'
+      url: jdbc:mysql://138.2.58.19:3306/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+      username: root
+      password: '@test1234'
       initialSize: 5
       minIdle: 5
       maxActive: 20
@@ -60,9 +60,9 @@ spring:
     allow-bean-definition-overriding: true
 
   redis:
-    host: 114.117.165.130
+    host: 138.2.58.19
     port: 6380
-    password: 'Eyi$0524'
+    password: '!adm123456'
     timeout: 10000
     lettuce:
       pool:
@@ -82,9 +82,10 @@ spring:
       database: eyi
       username: eyi
       password: 'eyiAdm$0524)'
-      host: 114.117.165.130
+      host: 138.2.58.19
       port: 27019
       authentication-database: eyi
+
 sa-token:
   # token前缀
   token-prefix: eyi
@@ -112,7 +113,7 @@ sa-token:
 #    org.hibernate.type.descriptor.sql.BasicBinder: trace
 eyi:
   storage:
-    fdfs:
-      tracker-server: 114.117.165.130:22122
-      # tracker.conf 中 http.server_port
-      http-tracker-http-port: 8080
+    minio:
+      endpoint: http://arm.xuyupeng.top:19099
+      username: admin
+      password: '@eyi0524'

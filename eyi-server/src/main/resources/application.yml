@@ -25,14 +25,6 @@ spring:
 eyi:
   storage:
     client: MINIO
-    fdfs:
-      tracker-server: 114.117.165.130:22122
-      # tracker.conf 中 http.server_port
-      http-tracker-http-port: 8080
-    minio:
-      endpoint: http://arm.xuyupeng.top:19099
-      username: admin
-      password: '@eyi0524'
 logging:
   level:
     org.springframework.boot.autoconfigure.logging: info
