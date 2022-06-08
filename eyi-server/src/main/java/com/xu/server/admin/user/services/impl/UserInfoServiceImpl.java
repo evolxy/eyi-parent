@@ -4,22 +4,28 @@ import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
 import com.xu.commons.exception.EyiException;
+import com.xu.server.admin.user.constant.CaptchaConstant;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
 import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.admin.user.services.IUserInfoService;
+import com.xu.server.admin.user.util.Captcha;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.impl.BaseServiceImpl;
+import com.xu.server.base.util.RedisUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Author
@@ -57,8 +63,22 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
     }
 
     @Override
-    public String getCode() {
-        return null;
+    public String getCode(OutputStream os) {
+        String captcha = Captcha.createImgCaptcha(os);
+        String captchaId = UUID.randomUUID().toString().replaceAll("-", "");
+        RedisUtils.set(CaptchaConstant.CAPTCHA_PREFIX +captchaId, captcha, CaptchaConstant.EXPIRE_SECONDS);
+        return captchaId;
+    }
+
+    @Override
+    public boolean checkCaptcha(LoginUserVo vo) {
+        String captcha = vo.getCode();
+        String id = vo.getCodeId();
+        Object o = RedisUtils.get(CaptchaConstant.CAPTCHA_PREFIX + id);
+        if (o == null) {
+            return false;
+        }
+        return StringUtils.equals(captcha, o.toString());
     }
 
     @SneakyThrows

@@ -13,6 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Author
  * @version 0.1
@@ -27,6 +33,10 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
     @PostMapping("/login")
     @ApiOperation("登录")
     public Result<?> login(@RequestBody LoginUserVo vo) {
+        boolean check = service.checkCaptcha(vo);
+        if (!check) {
+            return Result.failed("验证码错误");
+        }
         String token = service.login(vo);
         return StringUtils.isNotBlank(token) ?Result.ok("登录成功").data(token):Result.failed("登录失败");
     }
@@ -50,5 +60,19 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
         } else {
             return getById(loginUserBo.getId());
         }
+    }
+
+    @GetMapping("/captcha")
+    @ApiOperation("captcha")
+    public Result<?> captcha(HttpServletResponse response) {
+        // 返回图片验证码
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        String code = service.getCode(bos);
+        Base64.Encoder encoder = Base64.getEncoder();
+        String imgCaptcha = encoder.encodeToString(bos.toByteArray());
+        Map<String, String> codeMap = new HashMap<>(16);
+        codeMap.put("id", code);
+        codeMap.put("img", imgCaptcha);
+        return Result.ok(codeMap);
     }
 }

@@ -6,6 +6,8 @@ import com.xu.server.admin.user.pojo.vo.LoginUserVo;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.IBaseService;
 
+import java.io.OutputStream;
+
 /**
  * @author Author
  * @version 0.1
@@ -28,7 +30,15 @@ public interface IUserInfoService extends IBaseService<EyiUser>, StpInterface {
 
     /**
      * 获取图片验证码 并将图片验证码存入redis中备用
-     * @return 验证码
+     * @param os 将生成的图片放入到os中
+     * @return string captcha
      */
-    String getCode();
+    String getCode(OutputStream os);
+
+    /**
+     * 校验验证码
+     * @param vo vo
+     * @return ture | false
+     */
+    boolean checkCaptcha(LoginUserVo vo);
 }

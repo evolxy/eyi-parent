@@ -13,6 +13,10 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtils {
 	private static RedisTemplate<String, Object> template;
 
+	static {
+		template = ((RedisTemplate<String, Object>) ApplicationContextUtil.getBean("redisTemplate"));
+	}
+
 	/**
 	 * 默认过期时间 60 * 60 * 24
 	 */
