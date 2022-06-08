@@ -41,4 +41,17 @@ public class MinioFileClient implements IStorageClient {
 		}
 		return res;
 	}
+
+	@Override
+	public void delete(String path) {
+		String separator = "/";
+		if (path.endsWith(separator)) {
+			path = path.substring(0, path.length() - 2);
+		}
+		String[] split = path.split(separator);
+		int length = split.length;
+		String bucketName = split[length - 2];
+		String objName = split[length - 1];
+		MinioUtils.deleteObject(bucketName, objName);
+	}
 }

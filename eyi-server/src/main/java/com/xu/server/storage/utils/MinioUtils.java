@@ -120,7 +120,7 @@ public class MinioUtils {
 	}
 
 	public static String getObjectUrl(String bucketName, String objName, int expiry, TimeUnit timeUnit) {
-		Map<String, String> reqParams = new HashMap<>();
+		Map<String, String> reqParams = new HashMap<>(16);
 		reqParams.put("response-content-type", TikaUtils.getContentTypeByFileName(objName));
 		try {
 			GetPresignedObjectUrlArgs.Builder builder = GetPresignedObjectUrlArgs.builder()
@@ -156,6 +156,16 @@ public class MinioUtils {
 		} catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
 			log.error(e.getMessage(), e);
 			return "";
+		}
+	}
+
+	public static void deleteObject(String bucketName, String objName) {
+		RemoveObjectArgs removeArgs = RemoveObjectArgs.builder().bucket(bucketName).object(objName).build();
+		try {
+			CLIENT.removeObject(removeArgs);
+		} catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
+			log.error(e.getMessage(), e);
+
 		}
 	}
 }

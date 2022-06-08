@@ -2,8 +2,8 @@ package com.xu.server.admin.user.controller;
 
 import com.xu.commons.result.Result;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
-import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
+import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.base.controller.BaseController;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.util.EyiLoginUserUtil;
@@ -12,8 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Properties;
 
 /**
  * @author Author

@@ -2,7 +2,6 @@ package com.xu.server.admin.user.pojo.entities;
 
 import com.xu.commons.utils.SnowFlakeIdGenerator;
 import com.xu.server.base.pojo.entity.BaseEntity;
-import com.xu.server.base.util.SnowFlakeIdGeneratorUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

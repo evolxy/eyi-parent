@@ -1,7 +1,5 @@
 package com.xu.commons.utils;
 
-import com.xu.commons.exception.EyiException;
-
 /**
  * @author Author
  * @version 0.1

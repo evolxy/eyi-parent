@@ -7,5 +7,5 @@ package com.xu.server.storage.constant;
  */
 
 public interface MinioConstant {
-	String BUCKET_NAME = "eyi_files";
+	String BUCKET_NAME = "eyi";
 }

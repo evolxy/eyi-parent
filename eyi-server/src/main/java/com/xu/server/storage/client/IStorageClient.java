@@ -23,4 +23,10 @@ public interface IStorageClient {
 	 * @return byte 数组
 	 */
 	byte[] download(String path);
+
+	/**
+	 * 根据存储路径删除
+	 * @param path 路径
+	 */
+	void delete(String path);
 }
