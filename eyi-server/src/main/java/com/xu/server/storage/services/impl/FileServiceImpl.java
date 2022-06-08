@@ -91,12 +91,17 @@ public class FileServiceImpl extends BaseServiceImpl<FileInfo, FileInfoRepositor
 
 	@Override
 	public void removeById(long id) {
-
+		FileInfo info = getById(id);
+		if (info==null) {
+			return;
+		}
+		String storePath = info.getStorePath();
+		removeByPath(storePath);
 	}
 
 	@Override
 	public void removeByPath(String path) {
-
+		client.delete(path);
 	}
 
 }

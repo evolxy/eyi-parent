@@ -15,8 +15,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Slf4j
 public class StorageProps {
 	private StorageClient client;
-
-//	private FdfsProperties fdfs;
-//
-//	private MinioClientProperties minio;
 }
