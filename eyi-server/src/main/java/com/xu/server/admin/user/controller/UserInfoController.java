@@ -2,6 +2,7 @@ package com.xu.server.admin.user.controller;
 
 import com.xu.commons.result.Result;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
 import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.base.controller.BaseController;
@@ -39,6 +40,13 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
         }
         String token = service.login(vo);
         return StringUtils.isNotBlank(token) ?Result.ok("登录成功").data(token):Result.failed("登录失败");
+    }
+
+    @PostMapping("/changePasswd")
+    public Result<?> changePasswd(@RequestBody ChangePassVo vo) {
+
+        boolean changed = service.changePassWord(vo);
+        return changed?Result.ok("修改成功"):Result.failed("原密码错误");
     }
 
     @PostMapping("/logout")
