@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: dev
   banner:
     location: classpath:banner.txt
   mvc:
@@ -22,9 +22,6 @@ spring:
             enable: true
             required: true
 
-eyi:
-  storage:
-    client: MINIO
 logging:
   level:
     org.springframework.boot.autoconfigure.logging: info

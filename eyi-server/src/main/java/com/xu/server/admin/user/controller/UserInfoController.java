@@ -43,6 +43,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
     }
 
     @PostMapping("/changePasswd")
+    @ApiOperation("修改密码")
     public Result<?> changePasswd(@RequestBody ChangePassVo vo) {
 
         boolean changed = service.changePassWord(vo);

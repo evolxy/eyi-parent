@@ -103,7 +103,13 @@ sa-token:
   is-log: false
   # 自动续签
   auto-renew: true
-#
+eyi:
+  storage:
+    minio:
+      endpoint: http://localhost:19099
+      username: admin
+      password: '@eyi0524'
+
 logging:
   level:
     org.hibernate.engine.spi.QueryParameters: debug

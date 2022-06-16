@@ -7,7 +7,6 @@ import com.xu.server.storage.client.impl.MinioFileClient;
 import com.xu.server.storage.config.prop.FdfsProperties;
 import com.xu.server.storage.config.prop.MinioClientProperties;
 import com.xu.server.storage.config.prop.StorageProps;
-import com.xu.server.storage.constant.StorageClient;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
@@ -15,7 +14,7 @@ import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -33,33 +32,8 @@ import java.util.Properties;
 @EnableConfigurationProperties({StorageProps.class, MinioClientProperties.class, FdfsProperties.class})
 @Slf4j
 public class StorageClientConfig {
-	@Value("${eyi.storage.client}")
-	private StorageClient storeClient;
-
-	private final StorageProps storageProps;
-
-	public StorageClientConfig(StorageProps storageProps) {
-		this.storageProps = storageProps;
-	}
-
 	@Bean
-	public IStorageClient storageClient() {
-		IStorageClient client = null;
-		switch (storeClient) {
-			case MINIO:
-				client = new MinioFileClient();
-				break;
-			case FDFS:
-				client = new FdfsFileClient();
-				break;
-			default:
-				break;
-		}
-		return client;
-	}
-
-	@Bean
-	@ConditionalOnProperty(prefix = "eyi.storage", name = "client", havingValue = "FDFS")
+	@ConditionalOnProperty(name = "eyi.storage.fdfs.tracker-server")
 	public org.csource.fastdfs.StorageClient fdfsClient(@Autowired FdfsProperties properties) {
 		Properties prop;
 		try {
@@ -84,11 +58,25 @@ public class StorageClientConfig {
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "eyi.storage", name = "client", havingValue = "MINIO")
+	@ConditionalOnProperty(name = "eyi.storage.minio.endpoint")
 	public MinioClient minioClient(@Autowired MinioClientProperties properties) {
 		return MinioClient.builder()
 				.endpoint(properties.getEndpoint())
 				.credentials(properties.getUsername(), properties.getPassword())
 				.build();
+	}
+
+	@Bean
+	@ConditionalOnBean(org.csource.fastdfs.StorageClient.class)
+	public IStorageClient fdfsStorageClient() {
+		log.info("文件服务器类型为： fastdfs");
+		return new FdfsFileClient();
+	}
+
+	@Bean
+	@ConditionalOnBean(MinioClient.class)
+	public IStorageClient minioStorageClient() {
+		log.info("文件服务器类型为： minio");
+		return new MinioFileClient();
 	}
 }

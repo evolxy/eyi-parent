@@ -3,6 +3,7 @@ package com.xu.server.email.service;
 import com.xu.server.email.pojo.EmailInfo;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,6 +23,7 @@ import java.util.Map;
  * Created On 2022/5/25 10:59
  */
 @Component
+@Slf4j
 public class EmailService {
 	private final JavaMailSender jms;
 
@@ -35,16 +37,16 @@ public class EmailService {
 		this.fmc = fmc;
 	}
 
-	public void sendMsg() {
+	public void sendMsg(EmailInfo info, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setSubject("测试");
+		message.setSubject(info.getSubject());
 		message.setFrom(from);
-		message.setTo("1254226073@qq.com");
-		message.setText("这是一个测试邮件");
+		message.setTo(info.getTo());
+		message.setText(text);
 		jms.send(message);
 	}
 
-	public void sendMailByTemplate(Map<String, Object> params, EmailInfo info, String templatePath) {
+	public void sendMsg(Map<String, Object> params, EmailInfo info, String templatePath) {
 		try {
 			MimeMessage message = jms.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -58,7 +60,7 @@ public class EmailService {
 			helper.setText(html, true);
 			jms.send(message);
 		} catch (MessagingException | TemplateException | IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 	}
 }

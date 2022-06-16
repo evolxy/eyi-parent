@@ -141,7 +141,7 @@ public class EyiServerApplicationTest {
     @Test
     void test22() {
         Map<String, Object> params = new HashMap<>();
-        es.sendMailByTemplate(params, new EmailInfo("1254226073@qq.com", "测试"), "email/TestTemplate.ftlh");
+        es.sendMsg(params, new EmailInfo("1254226073@qq.com", "测试"), "email/TestTemplate.ftlh");
     }
 
 

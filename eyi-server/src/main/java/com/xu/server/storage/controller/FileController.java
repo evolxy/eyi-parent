@@ -21,8 +21,8 @@ import java.nio.charset.StandardCharsets;
  * Created On 2022/4/18 16:26
  */
 @RestController
-@RequestMapping("/store/fdfs")
-@Api(tags = "eyi-store-fdfs")
+@RequestMapping("/store/file")
+@Api(tags = "eyi-store-file")
 public class FileController {
     private final IFileService fileService;
 
