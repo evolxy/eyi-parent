@@ -2,10 +2,13 @@ package com.xu.server.base.controller;
 
 
 import com.xu.commons.result.Result;
+import com.xu.server.base.pojo.bo.PageParam;
+import com.xu.server.base.pojo.entity.BaseEntity;
 import com.xu.server.base.service.IBaseService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.List;
  */
 
 @Slf4j
-public class BaseController<T, M extends IBaseService<T>> {
+public class BaseController<T extends BaseEntity, M extends IBaseService<T>> {
     @Autowired
     protected M service;
 
@@ -32,8 +35,13 @@ public class BaseController<T, M extends IBaseService<T>> {
 
     @GetMapping("/page")
     @ApiOperation("get page")
-    public Result<?> page(@RequestParam int page, @RequestParam int size, @RequestBody(required = false) T entity) {
-        return Result.ok(service.page(page, size, entity));
+    public Result<?> page(@RequestParam int page, @RequestParam int size, T entity) {
+        if (page < 1) {
+            return Result.failed("无效的页数");
+        }
+        Page<T> res = service.page(page, size, entity);
+        PageParam<T> p = PageParam.convertToPage(res);
+        return Result.ok(p);
     }
 
     @GetMapping("/{id}")

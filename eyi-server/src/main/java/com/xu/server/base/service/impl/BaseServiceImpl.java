@@ -50,7 +50,10 @@ public class BaseServiceImpl<T extends BaseEntity, M extends BaseRepository<T>> 
     @Override
     public Page<T> page(int pageNo, int pageSize, T entity) {
         if (entity!=null) {
-            return repository.findAll(QueryBuilderUtil.specificationBuild(entity), PageRequest.of(pageNo-1, pageSize));
+            entity.setCreateTime(null);
+            entity.setUpdateTime(null);
+            Specification<T> specification = QueryBuilderUtil.specificationBuild(entity);
+            return repository.findAll(specification, PageRequest.of(pageNo-1, pageSize));
         } else {
             return repository.findAll(PageRequest.of(pageNo-1, pageSize));
         }

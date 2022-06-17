@@ -1,5 +1,6 @@
 package com.xu.server.base.repository;
 
+import com.xu.server.base.pojo.entity.BaseEntity;
 import org.hibernate.annotations.Where;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 @Where(clause = "del_flag = 0")
-public interface BaseRepository<T> extends JpaRepository<T, Long> {
+public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, Long> {
     String BASE_QUERY_SQL = "SELECT t FROM #{#entityName} t where t.delFlag = 0 ";
 
     /**
@@ -50,7 +51,6 @@ public interface BaseRepository<T> extends JpaRepository<T, Long> {
      * @param page 分页参数
      * @return page
      */
-    @Query(BASE_QUERY_SQL)
     @Transactional(readOnly = true)
     Page<T> findAll(Specification<T> specification, Pageable page);
 

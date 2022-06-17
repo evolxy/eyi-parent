@@ -68,7 +68,7 @@ public class EyiServerApplicationTest {
         user.setIntroduce("1111");
         user.setExpire(false);
         user.setLocked(false);
-        user.setDelFlag((byte)0);
+        user.setDelFlag(0);
         user.setCreateTime(LocalDateTime.now());
         user.setDeleteTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());

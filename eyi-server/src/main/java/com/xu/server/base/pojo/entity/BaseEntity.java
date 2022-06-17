@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.xu.server.base.enums.DelFlagEnum;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,7 +27,7 @@ public class BaseEntity implements Serializable {
     public BaseEntity() {
         this.createTime = LocalDateTime.now();
         this.updateTime = LocalDateTime.now();
-        this.delFlag = (byte) 0;
+        this.delFlag = DelFlagEnum.NOT_DELETED.getValue();
     }
 
     @Transient
@@ -40,7 +41,7 @@ public class BaseEntity implements Serializable {
 
     @Column
     @JsonIgnore
-    private byte delFlag;
+    private Integer delFlag;
 
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
