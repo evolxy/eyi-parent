@@ -17,5 +17,5 @@ public interface IArticleRepository extends BaseRepository<Article> {
      * @param delFlag 删除标记
      * @return article or null
      */
-    Article findByArticleIdAndDelFlag(String toHexString, byte delFlag);
+    Article findByArticleIdAndDelFlag(String toHexString, int delFlag);
 }

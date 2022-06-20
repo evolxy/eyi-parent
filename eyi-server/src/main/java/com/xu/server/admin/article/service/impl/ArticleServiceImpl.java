@@ -5,7 +5,7 @@ import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.article.pojo.document.ArticleDoc;
 import com.xu.server.admin.article.pojo.entity.Article;
 import com.xu.server.admin.article.pojo.entity.Catalog;
-import com.xu.server.admin.article.pojo.vo.ArticleVo;
+import com.xu.server.admin.article.pojo.vo.ArticleReqParam;
 import com.xu.server.admin.article.repository.IArticleRepository;
 import com.xu.server.admin.article.repository.ICatalogRepository;
 import com.xu.server.admin.article.service.IArticleService;
@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -40,16 +41,16 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ArticleDoc save(ArticleVo articleVo) {
+    public ArticleDoc save(ArticleReqParam reqParam) {
         ArticleDoc doc = new ArticleDoc();
-        BeanUtils.copyProperties(articleVo, doc);
+        BeanUtils.copyProperties(reqParam, doc);
         Article article = new Article();
-        BeanUtils.copyProperties(articleVo, article);
+        BeanUtils.copyProperties(reqParam, article);
         // 保存基础信息到mysql中
         template.save(doc);
         article.setArticleId(doc.getId().toHexString());
         articleRepository.save(article);
-        List<Catalog> catalogs = articleVo.getCatalogs();
+        List<Catalog> catalogs = reqParam.getCatalogs();
         if (CollectionUtils.isNotEmpty(catalogs)) {
             catalogRepository.saveAll(catalogs);
         }
@@ -57,20 +58,32 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
     }
 
     @Override
-    public ArticleDoc update(ArticleVo articleVo) throws EyiException {
+    public ArticleDoc update(ArticleReqParam reqParam) throws EyiException {
+        // 保存完整信息到mongodb中
         ArticleDoc doc = new ArticleDoc();
-        BeanUtils.copyProperties(articleVo, doc);
-        Article article = new Article();
-        BeanUtils.copyProperties(articleVo, article);
-        Article art = articleRepository.findByArticleIdAndDelFlag(articleVo.getId().toHexString(), (byte) 0);
-        if (art != null) {
-            article.setId(art.getId());
-        } else {
-            throw new EyiException("逻辑错误");
+        BeanUtils.copyProperties(reqParam, doc);
+        doc.setId(reqParam.getArticleId());
+
+        Query query = new Query(Criteria.where("id").is(reqParam.getArticleId()));
+        Update update = new Update();
+        update.set("content", reqParam.getContent());
+        update.set("mdContent", reqParam.getMdContent());
+        update.set("title", reqParam.getTitle());
+        update.set("subTitle", reqParam.getSubTitle());
+        update.set("updateTime", LocalDateTime.now());
+        UpdateResult result = template.updateFirst(query, update, ArticleDoc.class);
+        if (result.getModifiedCount() <= 0) {
+            throw new EyiException("更新失败");
         }
-        List<Catalog> catalogs = articleVo.getCatalogs();
+        // 保存数基础信息据库
+        Article article = new Article();
+        BeanUtils.copyProperties(reqParam, article);
+        article.setArticleId(reqParam.getArticleId().toHexString());
+        List<Catalog> catalogs = reqParam.getCatalogs();
         if (CollectionUtils.isNotEmpty(catalogs)) {
-            catalogRepository.saveAll(catalogs);
+            List<Catalog> saved = catalogRepository.saveAll(catalogs);
+            article.setCatalogs(saved);
+            saveOrUpdate(article);
         }
         return doc;
     }

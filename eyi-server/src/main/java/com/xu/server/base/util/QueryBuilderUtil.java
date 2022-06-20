@@ -20,11 +20,12 @@ import java.util.List;
 
 @Slf4j
 public class QueryBuilderUtil<T extends BaseEntity> {
+
 	public static <T> Specification<T> specificationBuild(T entity) {
-		return specificationBuild(entity, Operator.LIKE);
+		return specificationBuild(entity, Operator.EQUALS, true);
 	}
 
-	public static <T> Specification<T> specificationBuild(T entity, Operator operator) {
+	public static <T> Specification<T> specificationBuild(T entity, Operator operator, boolean isLogic) {
 		return (r, q, cb) -> {
 			List<Predicate> predicateList = new ArrayList<>();
 			Class<?> clazz = entity.getClass();
@@ -44,13 +45,13 @@ public class QueryBuilderUtil<T extends BaseEntity> {
 					if (value == null) {
 						continue;
 					}
-					Predicate predicate ;
+					Predicate predicate;
 					switch (operator) {
 						case EQUALS:
 							predicate = cb.equal(r.get(name), value);
 							break;
 						case LIKE:
-							predicate = cb.like(r.get(name), value.toString());
+							predicate = cb.like(r.get(name).as(String.class), "%" + value.toString() + "%");
 							break;
 						default:
 							continue;
@@ -60,8 +61,10 @@ public class QueryBuilderUtil<T extends BaseEntity> {
 					log.error(e.getMessage(), e);
 				}
 			}
-			// 添加逻辑删除
-			predicateList.add(cb.equal(r.get("delFlag"), Integer.parseInt("0")));
+			if (isLogic) {
+				// 添加逻辑删除
+				predicateList.add(cb.equal(r.get("delFlag"), 0));
+			}
 			Predicate and = cb.and(predicateList.toArray(new Predicate[0]));
 			return q.where(and).getRestriction();
 		};

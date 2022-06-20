@@ -3,7 +3,7 @@ package com.xu.server.admin.article.service;
 import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.article.pojo.document.ArticleDoc;
 import com.xu.server.admin.article.pojo.entity.Article;
-import com.xu.server.admin.article.pojo.vo.ArticleVo;
+import com.xu.server.admin.article.pojo.vo.ArticleReqParam;
 import com.xu.server.base.service.IBaseService;
 
 /**
@@ -15,18 +15,18 @@ import com.xu.server.base.service.IBaseService;
 public interface IArticleService extends IBaseService<Article> {
     /**
      * 保存
-     * @param article article
+     * @param reqParam article
      * @return article
      */
-    ArticleDoc save(ArticleVo article);
+    ArticleDoc save(ArticleReqParam reqParam);
 
     /**
      * 更新
-     * @param articleVo article
+     * @param reqParam article
      * @return article
      * @throws EyiException Exception
      */
-    ArticleDoc update(ArticleVo articleVo) throws EyiException;
+    ArticleDoc update(ArticleReqParam reqParam) throws EyiException;
 
     /**
      * 删除

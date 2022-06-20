@@ -2,10 +2,13 @@ package com.xu.server.storage.controller;
 
 import com.xu.commons.result.Result;
 import com.xu.commons.utils.TikaUtils;
+import com.xu.server.base.pojo.bo.PageParam;
+import com.xu.server.storage.pojo.entity.FileInfo;
 import com.xu.server.storage.pojo.vo.FileVo;
 import com.xu.server.storage.services.IFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,7 +66,9 @@ public class FileController {
 
     @ApiOperation("分页查询")
     @GetMapping("/page")
-    public Result<?> queryPage(@RequestParam int page, @RequestParam int size) {
-        return Result.ok(fileService.page(page, size));
+    public Result<?> queryPage(@RequestParam int current, @RequestParam int size) {
+        Page<FileInfo> res = fileService.page(current, size);
+        PageParam<FileInfo> resPage = PageParam.convertToPage(res);
+        return Result.ok(resPage);
     }
 }

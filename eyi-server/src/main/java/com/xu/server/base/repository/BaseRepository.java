@@ -24,14 +24,14 @@ import java.util.Optional;
 @NoRepositoryBean
 @Where(clause = "del_flag = 0")
 public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, Long> {
-    String BASE_QUERY_SQL = "SELECT t FROM #{#entityName} t where t.delFlag = 0 ";
+    String BASE_QUERY_SQL = "SELECT t FROM #{#entityName} t WHERE t.delFlag = 0 ";
 
     /**
      * 根据id查询
      * @param id id
      * @return entity
      */
-    @Query(BASE_QUERY_SQL + "and id=?1")
+    @Query(BASE_QUERY_SQL + "AND id=?1")
     @Transactional(readOnly = true)
     @Override
     Optional<T> findById(@Nonnull Long id);
@@ -41,7 +41,6 @@ public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, L
      * @param specification 封装的条件
      * @return List<entity>
      */
-    @Query(BASE_QUERY_SQL)
     @Transactional(readOnly = true)
     List<T> findAll(Specification<T> specification);
 

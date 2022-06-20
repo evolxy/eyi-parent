@@ -35,11 +35,11 @@ public class BaseController<T extends BaseEntity, M extends IBaseService<T>> {
 
     @GetMapping("/page")
     @ApiOperation("get page")
-    public Result<?> page(@RequestParam int page, @RequestParam int size, T entity) {
-        if (page < 1) {
+    public Result<?> page(@RequestParam int current, @RequestParam int size, T entity) {
+        if (current < 1) {
             return Result.failed("无效的页数");
         }
-        Page<T> res = service.page(page, size, entity);
+        Page<T> res = service.page(current, size, entity);
         PageParam<T> p = PageParam.convertToPage(res);
         return Result.ok(p);
     }

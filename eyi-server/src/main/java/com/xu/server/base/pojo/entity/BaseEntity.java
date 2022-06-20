@@ -69,4 +69,10 @@ public class BaseEntity implements Serializable {
 
     @Column
     private Long updateId;
+
+    public void deleteBaseProps() {
+        this.setDelFlag(null);
+        this.setCreateTime(null);
+        this.setUpdateTime(null);
+    }
 }
