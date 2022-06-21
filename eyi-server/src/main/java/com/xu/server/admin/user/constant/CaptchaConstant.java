@@ -7,6 +7,6 @@ package com.xu.server.admin.user.constant;
  */
 
 public interface CaptchaConstant {
-	int EXPIRE_SECONDS = 180;
+	int EXPIRE_SECONDS = 300;
 	String CAPTCHA_PREFIX = "eyi:captcha:";
 }

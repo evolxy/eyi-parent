@@ -2,12 +2,14 @@ package com.xu.server.admin.user.services;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
+import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.IBaseService;
 
-import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * @author Author
@@ -31,10 +33,10 @@ public interface IUserInfoService extends IBaseService<EyiUser>, StpInterface {
 
     /**
      * 获取图片验证码 并将图片验证码存入redis中备用
-     * @param os 将生成的图片放入到os中
+     * @param vo 验证码类型
      * @return string captcha
      */
-    String getCode(OutputStream os);
+    Map<String, String> getCode(CaptchaReqVo vo);
 
     /**
      * 校验验证码
@@ -49,4 +51,11 @@ public interface IUserInfoService extends IBaseService<EyiUser>, StpInterface {
      * @return changed
      */
     boolean changePassWord(ChangePassVo vo);
+
+    /**
+     * 修改基础信息
+     * @param userInfo user info
+     * @return true| false
+     */
+	boolean updateUserBaseInfo(UserInfoVo userInfo);
 }

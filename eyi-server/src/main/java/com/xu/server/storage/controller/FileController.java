@@ -40,6 +40,15 @@ public class FileController {
         return Result.ok().data(path);
     }
 
+    @PostMapping("/all")
+    @ApiOperation("多文件上传")
+    public Result<?> save(@RequestPart MultipartFile[] files) {
+        for (MultipartFile file : files) {
+            fileService.upload(file);
+        }
+        return Result.ok();
+    }
+
     @ApiOperation("下载文件")
     @GetMapping("/{id}")
     public void getFileById(@PathVariable Long id, HttpServletResponse response) {

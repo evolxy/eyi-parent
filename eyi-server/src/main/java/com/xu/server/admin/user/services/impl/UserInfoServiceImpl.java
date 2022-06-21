@@ -6,27 +6,31 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.user.constant.CaptchaConstant;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
+import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.admin.user.util.Captcha;
+import com.xu.server.base.enums.DelFlagEnum;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.impl.BaseServiceImpl;
+import com.xu.server.base.util.EyiLoginUserUtil;
 import com.xu.server.base.util.RedisUtils;
+import com.xu.server.email.pojo.EmailInfo;
+import com.xu.server.email.service.EmailService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.ByteArrayOutputStream;
+import java.util.*;
 
 /**
  * @author Author
@@ -38,13 +42,28 @@ import java.util.UUID;
 @Slf4j
 @CacheConfig(cacheNames = "user")
 public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoRepository> implements IUserInfoService {
+
+	private final EmailService emailService;
+
+	public UserInfoServiceImpl(EmailService emailService) {
+		this.emailService = emailService;
+	}
+
 	@Override
-	@Cacheable(key = "#vo.username")
+//	@Cacheable(key = "#vo.username")
 	public String login(LoginUserVo vo) {
 		String username = vo.getUsername();
 		String password = vo.getPassword();
-		byte delFlag = 0;
-		EyiUser user = repository.findByUsernameAndDelFlag(username, delFlag);
+		String email = vo.getEmail();
+		EyiUser user = null;
+		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+			// 比较
+			user = repository.findByUsernameAndDelFlag(username, DelFlagEnum.NOT_DELETED.getValue());
+		}
+		if (StringUtils.isNotBlank(email)) {
+			user = repository.findByEmailAndDelFlag(email, DelFlagEnum.NOT_DELETED.getValue());
+		}
+
 		if (user == null) {
 			throw new SaTokenException("用户不存在");
 		}
@@ -64,11 +83,31 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 	}
 
 	@Override
-	public String getCode(OutputStream os) {
-		String captcha = Captcha.createImgCaptcha(os);
+	public Map<String, String> getCode(CaptchaReqVo vo) {
+		String code = Captcha.generateCaptcha();
+		Map<String, String> codeMap = new HashMap<>(16);
 		String captchaId = UUID.randomUUID().toString().replaceAll("-", "");
-		RedisUtils.set(CaptchaConstant.CAPTCHA_PREFIX + captchaId, captcha, CaptchaConstant.EXPIRE_SECONDS);
-		return captchaId;
+		RedisUtils.set(CaptchaConstant.CAPTCHA_PREFIX + captchaId, code, CaptchaConstant.EXPIRE_SECONDS);
+		codeMap.put("id", captchaId);
+		switch (vo.getType()) {
+			case EMAIL:
+				// 发送邮件
+				HashMap<String, Object> params = new HashMap<>(4);
+				params.put("captcha", code);
+				params.put("expire", CaptchaConstant.EXPIRE_SECONDS);
+				emailService.sendMsg(params, new EmailInfo(vo.getEmail(), "登录验证码"), "emails/captcha.ftlh");
+				break;
+			case WEB:
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				Captcha.createImgCaptcha(bos, code);
+				Base64.Encoder encoder = Base64.getEncoder();
+				String imgCaptcha = encoder.encodeToString(bos.toByteArray());
+				codeMap.put("img", imgCaptcha);
+				break;
+			default:
+				break;
+		}
+		return codeMap;
 	}
 
 	@Override
@@ -103,6 +142,19 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean updateUserBaseInfo(UserInfoVo userInfo) {
+		LoginUserBo userBo = EyiLoginUserUtil.loginUser();
+		if (userBo==null) {
+			return false;
+		}
+
+		EyiUser user = new EyiUser();
+		BeanUtils.copyProperties(userInfo, user);
+		user.setId(userBo.getId());
+		return saveOrUpdate(user) == null;
 	}
 
 	@SneakyThrows

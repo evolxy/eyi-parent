@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -37,6 +38,12 @@ public class EyiUser extends BaseEntity implements Serializable {
 
     @Column(length = 300)
     private String introduce;
+
+    @Column
+    private LocalDate birthday;
+
+    @Column(length = 30)
+    private String nickname;
 
     @Column
     @JsonIgnore

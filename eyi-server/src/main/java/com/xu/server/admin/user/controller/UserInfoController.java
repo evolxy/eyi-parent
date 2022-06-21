@@ -1,9 +1,12 @@
 package com.xu.server.admin.user.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.xu.commons.result.Result;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
+import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.base.controller.BaseController;
 import com.xu.server.base.pojo.bo.LoginUserBo;
@@ -14,10 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -71,17 +70,20 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
         }
     }
 
+
+    @PostMapping("")
+    @ApiOperation("update user info")
+    @SaCheckLogin
+    public Result<?> updateUserInfo(@RequestBody UserInfoVo userInfo) {
+        boolean changed = service.updateUserBaseInfo(userInfo);
+        return Result.ok();
+    }
+
     @GetMapping("/captcha")
     @ApiOperation("captcha")
-    public Result<?> captcha(HttpServletResponse response) {
-        // 返回图片验证码
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        String code = service.getCode(bos);
-        Base64.Encoder encoder = Base64.getEncoder();
-        String imgCaptcha = encoder.encodeToString(bos.toByteArray());
-        Map<String, String> codeMap = new HashMap<>(16);
-        codeMap.put("id", code);
-        codeMap.put("img", imgCaptcha);
-        return Result.ok(codeMap);
+    public Result<?> captcha(CaptchaReqVo vo) {
+        Map<String, String> code = service.getCode(vo);
+        return Result.ok(code);
+
     }
 }

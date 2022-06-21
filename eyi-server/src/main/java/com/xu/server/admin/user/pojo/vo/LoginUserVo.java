@@ -11,12 +11,14 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class LoginUserVo {
-	@NotNull
+
 	private String username;
-	@NotNull
 	private String password;
+
 	@NotNull
 	private String codeId;
 	@NotNull
 	private String code;
+
+	private String email;
 }

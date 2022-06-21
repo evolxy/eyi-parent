@@ -20,7 +20,7 @@ public interface UserInfoRepository extends BaseRepository<EyiUser> {
      * @param delFlag 删除标记
      * @return user
      */
-    EyiUser findByUsernameAndDelFlag(String username, byte delFlag);
+    EyiUser findByUsernameAndDelFlag(String username, int delFlag);
 
     /**
      * 根据id 获取 角色编码列表
@@ -44,4 +44,12 @@ public interface UserInfoRepository extends BaseRepository<EyiUser> {
             "LEFT JOIN eyi_permission p ON p.id = rp.permission_id " +
             "WHERE  u.id = ?1 AND u.del_flag=0 AND p.del_flag=0")
     List<String> findPermissionCodeListById(long uId);
+
+    /**
+     * 查询用户
+     * @param email 用户名
+     * @param delFlag 删除标记
+     * @return user
+     */
+    EyiUser findByEmailAndDelFlag(String email, int delFlag);
 }
