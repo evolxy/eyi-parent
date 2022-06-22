@@ -28,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.util.*;
@@ -146,17 +147,16 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		}
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public boolean updateUserBaseInfo(UserInfoVo userInfo) {
 		LoginUserBo userBo = EyiLoginUserUtil.loginUser();
 		if (userBo==null) {
 			return false;
 		}
-
-		EyiUser user = new EyiUser();
+		EyiUser user = getById(userBo.getId());
 		BeanUtils.copyProperties(userInfo, user);
-		user.setId(userBo.getId());
-		return saveOrUpdate(user) == null;
+		return saveOrUpdate(user)==null;
 	}
 
 	@SneakyThrows

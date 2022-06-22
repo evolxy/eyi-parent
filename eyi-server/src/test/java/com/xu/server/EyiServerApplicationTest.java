@@ -292,4 +292,14 @@ public class EyiServerApplicationTest {
         System.out.println(url.substring(0, url.indexOf("?")));
         System.out.println(url);
     }
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Test
+    void test28() {
+        EyiUser user = userInfoRepository.findById(1L).orElse(new EyiUser());
+        EyiUser eyiUser = userInfoRepository.getById(1L);
+        System.out.println("hello ");
+    }
 }

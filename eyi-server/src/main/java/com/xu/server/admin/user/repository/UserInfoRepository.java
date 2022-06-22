@@ -1,8 +1,11 @@
 package com.xu.server.admin.user.repository;
 
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import com.xu.server.base.repository.BaseRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -52,4 +55,15 @@ public interface UserInfoRepository extends BaseRepository<EyiUser> {
      * @return user
      */
     EyiUser findByEmailAndDelFlag(String email, int delFlag);
+
+    /**
+     * 修改用户基础信息
+     * @param userInfo 基础信息
+     * @return true|false
+     */
+    @Modifying
+    @Query("UPDATE EyiUser SET nickname=:#{#user.nickname}, " +
+            "birthday=:#{#user.birthday},introduce=:#{#user.introduce}, " +
+            "gender=:#{#user.gender}, avatar=:#{#user.avatar} where id=:#{#user.id}")
+	int updateBaseInfo(@Param("user") UserInfoVo userInfo);
 }

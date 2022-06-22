@@ -5,6 +5,8 @@ import com.xu.server.base.enums.GenderEnum;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,6 +22,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "eyi_user")
+@DynamicUpdate
+@SelectBeforeUpdate
 public class EyiUser extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 3737899427754241961L;
 
