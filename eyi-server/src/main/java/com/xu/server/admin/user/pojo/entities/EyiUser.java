@@ -30,6 +30,15 @@ public class EyiUser extends BaseEntity implements Serializable {
     @JsonIgnore
     private String password;
 
+    /**
+     * 密码强度： 数字  大写字母 小写字母 特殊符号  包含一个为1 两个2 三个3 四个4
+     */
+    @Column
+    private int passwordStrength;
+
+    @Column
+    private String avatar;
+
     @Column(length = 50)
     private String email;
 

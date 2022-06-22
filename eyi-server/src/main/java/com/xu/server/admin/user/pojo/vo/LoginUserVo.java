@@ -18,7 +18,7 @@ public class LoginUserVo {
 	@NotNull
 	private String codeId;
 	@NotNull
-	private String code;
+	private String captcha;
 
 	private String email;
 }

@@ -4,6 +4,7 @@ import com.xu.server.base.pojo.entity.BaseEntity;
 import com.xu.server.base.repository.BaseRepository;
 import com.xu.server.base.service.IBaseService;
 import com.xu.server.base.util.QueryBuilderUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,6 +66,9 @@ public class BaseServiceImpl<T extends BaseEntity, M extends BaseRepository<T>> 
 
     @Override
     public T saveOrUpdate(T entity) {
+        T db = getById(entity.getId());
+        entity.setCreateTime(null);
+        BeanUtils.copyProperties(entity, db);
         return repository.save(entity);
     }
 

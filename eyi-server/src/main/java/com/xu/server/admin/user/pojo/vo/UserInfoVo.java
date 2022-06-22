@@ -19,4 +19,6 @@ public class UserInfoVo {
 	private String nickname;
 
 	private GenderEnum gender;
+
+	private String avatar;
 }

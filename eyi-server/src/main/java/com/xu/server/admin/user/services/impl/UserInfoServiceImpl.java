@@ -112,12 +112,14 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 
 	@Override
 	public boolean checkCaptcha(LoginUserVo vo) {
-		String captcha = vo.getCode();
+		String captcha = vo.getCaptcha();
 		String id = vo.getCodeId();
-		Object o = RedisUtils.get(CaptchaConstant.CAPTCHA_PREFIX + id);
+		String key = CaptchaConstant.CAPTCHA_PREFIX + id;
+		Object o = RedisUtils.get(key);
 		if (o == null) {
 			return false;
 		}
+		RedisUtils.delete(key);
 		return StringUtils.equals(captcha, o.toString());
 	}
 

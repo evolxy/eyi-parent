@@ -61,7 +61,7 @@ public class Captcha {
 		graphics.setFont(new Font("Georgia", Font.ITALIC, 30));
 		Random random = new Random(System.currentTimeMillis());
 
-		graphics.drawString(code, 17, 24);
+		graphics.drawString(code, 5, 24);
 		for (int i = 0; i < lineNum; i++) {
 			Color c = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 			graphics.setColor(c);
