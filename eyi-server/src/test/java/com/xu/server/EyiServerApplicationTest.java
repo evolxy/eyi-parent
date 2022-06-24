@@ -3,6 +3,7 @@ package com.xu.server;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
+import com.xu.server.base.util.ApplicationContextUtil;
 import com.xu.server.base.util.QueryBuilderUtil;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
@@ -301,5 +302,14 @@ public class EyiServerApplicationTest {
         EyiUser user = userInfoRepository.findById(1L).orElse(new EyiUser());
         EyiUser eyiUser = userInfoRepository.getById(1L);
         System.out.println("hello ");
+    }
+
+    @Test
+    void test29() {
+        Long loginUserId = 1L;
+        UserInfoRepository repository = ApplicationContextUtil.getBean(UserInfoRepository.class);
+        Optional<EyiUser> optional = repository.findById(loginUserId);
+        System.out.println("hello world");
+
     }
 }

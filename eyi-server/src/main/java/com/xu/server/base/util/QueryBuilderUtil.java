@@ -9,7 +9,6 @@ import javax.persistence.criteria.Predicate;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class QueryBuilderUtil<T extends BaseEntity> {
 		return (r, q, cb) -> {
 			List<Predicate> predicateList = new ArrayList<>();
 			Class<?> clazz = entity.getClass();
-			Field[] fields = getFields(clazz);
+			Field[] fields = BeanPropsUtils.getFields(clazz);
 			for (Field field : fields) {
 				field.setAccessible(true);
 				//  忽略非数据库字段和final修饰的字段
@@ -70,14 +69,6 @@ public class QueryBuilderUtil<T extends BaseEntity> {
 		};
 	}
 
-	private static Field[] getFields(Class<?> clazz) {
-		List<Field> fields = new ArrayList<>();
-		while (clazz != null) {
-			fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-			clazz = clazz.getSuperclass();
-		}
-		return fields.toArray(new Field[0]);
-	}
 
 	enum Operator {
 		/**

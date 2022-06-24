@@ -13,4 +13,6 @@ public class ChangePassVo {
 	private String oldPassword;
 
 	private String newPassword;
+
+	private int passwordStrength;
 }

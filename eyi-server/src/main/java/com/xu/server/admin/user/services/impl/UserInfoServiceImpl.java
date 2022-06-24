@@ -16,6 +16,7 @@ import com.xu.server.admin.user.util.Captcha;
 import com.xu.server.base.enums.DelFlagEnum;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.impl.BaseServiceImpl;
+import com.xu.server.base.util.BeanPropsUtils;
 import com.xu.server.base.util.EyiLoginUserUtil;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
@@ -24,7 +25,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -150,12 +150,13 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public boolean updateUserBaseInfo(UserInfoVo userInfo) {
-		LoginUserBo userBo = EyiLoginUserUtil.loginUser();
-		if (userBo==null) {
+		Long id = EyiLoginUserUtil.loginUserId();
+		if (id == null) {
 			return false;
 		}
-		EyiUser user = getById(userBo.getId());
-		BeanUtils.copyProperties(userInfo, user);
+		EyiUser user = new EyiUser();
+		BeanPropsUtils.copyNotNullProps(userInfo, user);
+		user.setId(id);
 		return saveOrUpdate(user)==null;
 	}
 

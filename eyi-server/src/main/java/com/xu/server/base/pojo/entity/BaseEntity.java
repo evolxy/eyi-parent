@@ -8,10 +8,15 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.xu.server.base.enums.DelFlagEnum;
+import com.xu.server.base.util.EyiLoginUserUtil;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,10 +30,10 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+@DynamicUpdate
 public class BaseEntity implements Serializable {
     public BaseEntity() {
-        this.createTime = LocalDateTime.now();
-        this.updateTime = LocalDateTime.now();
         this.delFlag = DelFlagEnum.NOT_DELETED.getValue();
     }
 
@@ -62,21 +67,35 @@ public class BaseEntity implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updateTime;
 
     @Column
+    @CreatedBy
     private Long createId;
 
     @Column
     private Long deleteId;
 
     @Column
+    @LastModifiedBy
     private Long updateId;
 
     public void deleteBaseProps() {
         this.setDelFlag(null);
         this.setCreateTime(null);
         this.setUpdateTime(null);
+    }
+
+    public void setUpdateInfo() {
+        this.updateTime = LocalDateTime.now();
+        this.updateId = EyiLoginUserUtil.loginUserId();
+    }
+
+    public void setInsertInfo() {
+        this.delFlag = DelFlagEnum.NOT_DELETED.getValue();
+        setUpdateInfo();
+        this.createId = EyiLoginUserUtil.loginUserId();
+        this.createTime = LocalDateTime.now();
     }
 }

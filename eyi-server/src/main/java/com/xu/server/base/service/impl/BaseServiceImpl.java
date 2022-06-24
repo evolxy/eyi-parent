@@ -3,8 +3,8 @@ package com.xu.server.base.service.impl;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import com.xu.server.base.repository.BaseRepository;
 import com.xu.server.base.service.IBaseService;
+import com.xu.server.base.util.BeanPropsUtils;
 import com.xu.server.base.util.QueryBuilderUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -66,9 +66,19 @@ public class BaseServiceImpl<T extends BaseEntity, M extends BaseRepository<T>> 
 
     @Override
     public T saveOrUpdate(T entity) {
-        T db = getById(entity.getId());
-        entity.setCreateTime(null);
-        BeanUtils.copyProperties(entity, db);
+        // 判断id是否存在
+        Long id = entity.getId();
+        if (id != null) {
+            // 更新
+            T db = repository.getById(id);
+            // 复制更新过的值
+            BeanPropsUtils.copyNotNullProps(entity, db);
+            entity = db;
+            db.setUpdateInfo();
+        } else {
+            // 保存
+            entity.setInsertInfo();
+        }
         return repository.save(entity);
     }
 

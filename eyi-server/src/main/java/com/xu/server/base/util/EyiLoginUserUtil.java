@@ -6,7 +6,6 @@ import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 
 import java.util.Optional;
 
@@ -18,6 +17,21 @@ import java.util.Optional;
 @Slf4j
 public class EyiLoginUserUtil {
 	public static LoginUserBo loginUser() {
+		Long loginUserId = loginUserId();
+		if (loginUserId != null) {
+			UserInfoRepository repository = ApplicationContextUtil.getBean(UserInfoRepository.class);
+			Optional<EyiUser> optional = repository.findById(loginUserId);
+			if (optional.isPresent()) {
+				EyiUser user = optional.get();
+				LoginUserBo bo = new LoginUserBo();
+				BeanPropsUtils.copyNotNullProps(user, bo);
+				return bo;
+			}
+		}
+		return null;
+	}
+
+	public static Long loginUserId() {
 		Long loginUserId = null;
 		String tokenValue = StpUtil.getTokenValue();
 		if (StringUtils.isNotBlank(tokenValue)) {
@@ -34,16 +48,6 @@ public class EyiLoginUserUtil {
 		if (StpUtil.isLogin()) {
 			loginUserId = StpUtil.getLoginIdAsLong();
 		}
-		if (loginUserId != null) {
-			UserInfoRepository repository = ApplicationContextUtil.getBean(UserInfoRepository.class);
-			Optional<EyiUser> optional = repository.findById(loginUserId);
-			if (optional.isPresent()) {
-				EyiUser user = optional.get();
-				LoginUserBo bo = new LoginUserBo();
-				BeanUtils.copyProperties(user, bo);
-				return bo;
-			}
-		}
-		return null;
+		return loginUserId;
 	}
 }
