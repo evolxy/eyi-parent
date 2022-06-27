@@ -1,13 +1,11 @@
 package com.xu.server.admin.user.pojo.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author Author
@@ -16,8 +14,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@Table(name = "eyi_role")
+@TableName(value = "eyi_role")
 public class EyiRole extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 373784241961L;
 
@@ -25,11 +22,4 @@ public class EyiRole extends BaseEntity implements Serializable {
 
 	private String roleCode;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JsonIgnore
-	@JoinTable(name = "eyi_role_permission",schema = "eyi",
-			joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "permissionId", referencedColumnName = "id")}
-	)
-	List<EyiPermission> permissions;
 }

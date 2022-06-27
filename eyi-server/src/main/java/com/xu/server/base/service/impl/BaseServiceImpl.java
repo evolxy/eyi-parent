@@ -1,17 +1,14 @@
 package com.xu.server.base.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xu.server.base.pojo.entity.BaseEntity;
-import com.xu.server.base.repository.BaseRepository;
 import com.xu.server.base.service.IBaseService;
-import com.xu.server.base.util.BeanPropsUtils;
-import com.xu.server.base.util.QueryBuilderUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
+import com.xu.server.base.util.QueryWrapperCreator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,120 +16,26 @@ import java.util.List;
  * @version 0.1
  * Created On 2022/3/16 16:52
  */
-public class BaseServiceImpl<T extends BaseEntity, M extends BaseRepository<T>> implements IBaseService<T> {
-    @Autowired
-    protected M repository;
+public class BaseServiceImpl<T extends BaseEntity, M extends BaseMapper<T>> extends ServiceImpl< M, T> implements IBaseService<T> {
+	@Override
+	public List<T> list(T entity) {
+		QueryWrapper<T> wrapper = QueryWrapperCreator.create(entity);
+		if (wrapper == null) {
+			return new ArrayList<>();
+		}
+		return baseMapper.selectList(wrapper);
+	}
 
-    @Override
-    public List<T> list() {
-        return repository.findAll();
-    }
+	@Override
+	public Page<T> page(int current, int size, T entity) {
+		Page<T> page = new Page<>(current, size);
+		QueryWrapper<T> wrapper = QueryWrapperCreator.create(entity);
+		return baseMapper.selectPage(page, wrapper);
+	}
 
-    @Override
-    public List<T> list(Specification<T> criteria) {
-        return repository.findAll(criteria);
-    }
-
-    @Override
-    public Page<T> page(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
-    @Override
-    public Page<T> page(int pageNo, int pageSize) {
-        return repository.findAll(PageRequest.of(pageNo-1, pageSize));
-    }
-
-    @Override
-    public Page<T> page(int pageNo, int pageSize, Sort sort) {
-        return repository.findAll(PageRequest.of(pageNo-1, pageSize, sort));
-    }
-
-    @Override
-    public Page<T> page(int pageNo, int pageSize, T entity) {
-        if (entity!=null) {
-            entity.deleteBaseProps();
-            Specification<T> specification = QueryBuilderUtil.specificationBuild(entity);
-            return repository.findAll(specification, PageRequest.of(pageNo-1, pageSize));
-        } else {
-            return repository.findAll(PageRequest.of(pageNo-1, pageSize));
-        }
-    }
-
-    @Override
-    public T getById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @Override
-    public T saveOrUpdate(T entity) {
-        // 判断id是否存在
-        Long id = entity.getId();
-        if (id != null) {
-            // 更新
-            T db = repository.getById(id);
-            // 复制更新过的值
-            BeanPropsUtils.copyNotNullProps(entity, db);
-            entity = db;
-            db.setUpdateInfo();
-        } else {
-            // 保存
-            entity.setInsertInfo();
-        }
-        return repository.save(entity);
-    }
-
-    @Override
-    public boolean saveBatch(List<T> entities) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(List<T> entities) {
-        return false;
-    }
-
-    @Override
-    public boolean removeById(Long id) {
-        repository.deleteById(id);
-        return true;
-    }
-
-    @Override
-    public boolean isExisted(Long id) {
-        // 存在 -> true 否则为false
-        return repository.findById(id).isEmpty();
-    }
-
-    @Override
-    public boolean isValid(Long id) {
-        // 存在且删除标记为0 为true  否则为false
-        T entity = repository.findById(id).orElse(null);
-        return entity != null && entity.getDelFlag() == 0;
-    }
-
-    @Override
-    public int logicRemoveById(Long id) {
-        return repository.logicDelById(id);
-    }
-
-    @Override
-    public boolean logicRemove(Specification<T> specification) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Specification<T> specification) {
-        return false;
-    }
-
-    @Override
-    public List<T> list(T entity) {
-        if (entity!=null) {
-            entity.deleteBaseProps();
-            return repository.findAll(QueryBuilderUtil.specificationBuild(entity));
-        } else {
-            return list();
-        }
-    }
+	@Override
+	public Page<T> page(int current, int size) {
+		Page<T> page = new Page<>(current, size);
+		return baseMapper.selectPage(page, new QueryWrapper<>());
+	}
 }

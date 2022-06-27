@@ -1,11 +1,10 @@
 package com.xu.server.admin.user.pojo.entities;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -15,8 +14,7 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@Table(name = "eyi_permission")
+@TableName(value = "eyi_permission")
 public class EyiPermission extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 39427754241961L;
 

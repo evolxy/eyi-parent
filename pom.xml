@@ -33,11 +33,17 @@
         <minio.version>8.3.5</minio.version>
         <okhttp.version>4.8.1</okhttp.version>
         <fastjson.version>1.2.78</fastjson.version>
+        <mp.version>3.5.2</mp.version>
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mp.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>

@@ -3,8 +3,6 @@ package com.xu.server;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
-import com.xu.server.base.util.ApplicationContextUtil;
-import com.xu.server.base.util.QueryBuilderUtil;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
@@ -21,14 +19,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Author
@@ -40,24 +40,24 @@ import java.util.*;
 public class EyiServerApplicationTest {
     @Autowired
     private UserInfoRepository repository;
-    @Test
-    void test() {
-        EyiUser user = new EyiUser();
-        user.setId(518605471188258816L);
-        Specification<EyiUser> specification = QueryBuilderUtil.specificationBuild(user);
-        List<EyiUser> all = repository.findAll(specification);
-        System.out.println(all);
-    }
-
-    @Test
-    void test2() {
-//        Page<EyiUser> all = repository.findAll(PageRequest.of(0,10));
-        int del = repository.logicDelById(518605471188258816L);
-        System.out.println("del "+ del);
-        EyiUser all = repository.findById(518605471188258816L).orElse(null);
-
-        System.out.println(all);
-    }
+//    @Test
+//    void test() {
+//        EyiUser user = new EyiUser();
+//        user.setId(518605471188258816L);
+//        Specification<EyiUser> specification = QueryBuilderUtil.specificationBuild(user);
+//        List<EyiUser> all = repository.findAll(specification);
+//        System.out.println(all);
+//    }
+//
+//    @Test
+//    void test2() {
+////        Page<EyiUser> all = repository.findAll(PageRequest.of(0,10));
+//        int del = repository.logicDelById(518605471188258816L);
+//        System.out.println("del "+ del);
+//        EyiUser all = repository.findById(518605471188258816L).orElse(null);
+//
+//        System.out.println(all);
+//    }
 
     @Test
     void testAdd() {
@@ -76,7 +76,7 @@ public class EyiServerApplicationTest {
         user.setCreateId(0L);
         user.setDeleteId(0L);
         user.setUpdateId(0L);
-        repository.save(user);
+//        repository.save(user);
     }
 
 //    @Autowired
@@ -297,19 +297,26 @@ public class EyiServerApplicationTest {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
-    @Test
-    void test28() {
-        EyiUser user = userInfoRepository.findById(1L).orElse(new EyiUser());
-        EyiUser eyiUser = userInfoRepository.getById(1L);
-        System.out.println("hello ");
-    }
+//    @Test
+//    void test28() {
+//        EyiUser user = userInfoRepository.findById(1L).orElse(new EyiUser());
+//        EyiUser eyiUser = userInfoRepository.getById(1L);
+//        System.out.println("hello ");
+//    }
+//
+//    @Test
+//    void test29() {
+//        Long loginUserId = 1L;
+//        UserInfoRepository repository = ApplicationContextUtil.getBean(UserInfoRepository.class);
+//        Optional<EyiUser> optional = repository.findById(loginUserId);
+//        System.out.println("hello world");
+//
+//    }
 
     @Test
-    void test29() {
-        Long loginUserId = 1L;
-        UserInfoRepository repository = ApplicationContextUtil.getBean(UserInfoRepository.class);
-        Optional<EyiUser> optional = repository.findById(loginUserId);
-        System.out.println("hello world");
-
+    void test30 (){
+        if (RedisUtils.hasKey("ces")) {
+            RedisUtils.expire("ces", 0);
+        }
     }
 }

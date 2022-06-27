@@ -1,10 +1,11 @@
 package com.xu.server.admin.article.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -13,20 +14,18 @@ import java.util.List;
  * Created On 2022/4/6 10:08
  */
 @EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "eyi_article")
+@TableName(value = "eyi_article")
 @Data
 public class Article extends BaseEntity {
-    private String articleId;
+	@TableField
+	private String articleId;
 
-    private String subTitle;
+	@TableField
+	private String subTitle;
 
-    private String title;
+	@TableField
+	private String title;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "eyi_article_catalog",schema = "eyi",
-            joinColumns = {@JoinColumn(name = "articleId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "catalogId", referencedColumnName = "id")}
-    )
-    private List<Catalog> catalogs;
+	@TableField(exist = false)
+	private List<Catalog> catalogs;
 }

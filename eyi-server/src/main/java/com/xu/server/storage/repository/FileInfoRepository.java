@@ -1,7 +1,8 @@
 package com.xu.server.storage.repository;
 
-import com.xu.server.base.repository.BaseRepository;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xu.server.storage.pojo.entity.FileInfo;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +11,6 @@ import org.springframework.stereotype.Repository;
  * Created On 2022/4/18 15:45
  */
 @Repository
-public interface FileInfoRepository extends BaseRepository<FileInfo> {
+@Mapper
+public interface FileInfoRepository extends BaseMapper<FileInfo> {
 }

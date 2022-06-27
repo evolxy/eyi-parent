@@ -1,7 +1,7 @@
 package com.xu.server.base.pojo.bo;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -25,18 +25,17 @@ public class PageParam<T> {
 	public static <T> PageParam<T> convertToPage(Page<T> page) {
 		PageParam<T> res = new PageParam<>();
 		// 数据
-		List<T> content = page.getContent();
+		List<T> content = page.getRecords();
 		res.setContent(content);
 		// 总页数
-		int totalPages = page.getTotalPages();
+		long totalPages = page.getPages();
 		res.setTotalPages(totalPages);
 
-		int size = page.getSize();
-		long totalElements = page.getTotalElements();
-		int current = page.getNumber() + 1;
+		long size = page.getSize();
+
+		long current = page.getSize();
 		res.setCurrent(current);
 		res.setSize(size);
-		res.setTotalElements(totalElements);
 		return res;
 	}
 }

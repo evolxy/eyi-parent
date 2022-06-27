@@ -1,10 +1,10 @@
 package com.xu.server.admin.user.repository;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.pojo.vo.UserInfoVo;
-import com.xu.server.base.repository.BaseRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,8 @@ import java.util.List;
  * Created On 2022/3/15 16:55
  */
 @Repository
-public interface UserInfoRepository extends BaseRepository<EyiUser> {
+@Mapper
+public interface UserInfoRepository extends BaseMapper<EyiUser> {
     /**
      * 查询用户
      * @param username 用户名
@@ -30,7 +31,7 @@ public interface UserInfoRepository extends BaseRepository<EyiUser> {
      * @param uId 用户id
      * @return list
      */
-    @Query(nativeQuery = true, value = "SELECT r.role_code FROM eyi_user u " +
+    @Select( value = "SELECT r.role_code FROM eyi_user u " +
             "LEFT JOIN eyi_user_role ur ON u.id = ur.user_id " +
             "LEFT JOIN eyi_role r ON ur.role_id = r.id " +
             "WHERE  u.id = ?1 AND u.del_flag=0 AND r.del_flag=0")
@@ -41,7 +42,7 @@ public interface UserInfoRepository extends BaseRepository<EyiUser> {
      * @param uId 用户id
      * @return list
      */
-    @Query(nativeQuery = true, value = "SELECT p.permission_code FROM eyi_user u " +
+    @Select(value = "SELECT p.permission_code FROM eyi_user u " +
             "LEFT JOIN eyi_user_role ur ON u.id = ur.user_id " +
             "LEFT JOIN eyi_role_permission rp ON ur.role_id = rp.role_id " +
             "LEFT JOIN eyi_permission p ON p.id = rp.permission_id " +
@@ -61,9 +62,9 @@ public interface UserInfoRepository extends BaseRepository<EyiUser> {
      * @param userInfo 基础信息
      * @return true|false
      */
-    @Modifying
-    @Query("UPDATE EyiUser SET nickname=:#{#user.nickname}, " +
-            "birthday=:#{#user.birthday},introduce=:#{#user.introduce}, " +
-            "gender=:#{#user.gender}, avatar=:#{#user.avatar} where id=:#{#user.id}")
+
+    @Select("UPDATE eyi_user SET nickname=#{user.nickname}, " +
+            "birthday=#{user.birthday},introduce=#{user.introduce}, " +
+            "gender=#{user.gender}, avatar=#{user.avatar} where id=#{user.id}")
 	int updateBaseInfo(@Param("user") UserInfoVo userInfo);
 }

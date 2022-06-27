@@ -1,6 +1,7 @@
 package com.xu.server.base.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xu.commons.result.Result;
 import com.xu.server.base.pojo.bo.PageParam;
 import com.xu.server.base.pojo.entity.BaseEntity;
@@ -8,7 +9,6 @@ import com.xu.server.base.service.IBaseService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class BaseController<T extends BaseEntity, M extends IBaseService<T>> {
 
     @GetMapping("/list")
     @ApiOperation("get List")
-    public Result<List<T>> list(@RequestBody(required = false) T entity) {
+    public Result<List<T>> list(T entity) {
         List<T> list = service.list(entity);
         log.info("get list size= {}", list.size());
         log.trace("get list {}", list);
@@ -53,13 +53,13 @@ public class BaseController<T extends BaseEntity, M extends IBaseService<T>> {
     @PutMapping("/")
     @ApiOperation("update by id")
     public Result<?> updateById(@RequestBody T entity) {
-        return Result.ok(service.saveOrUpdate(entity)) ;
+        return Result.ok(service.updateById(entity)) ;
     }
 
     @PostMapping("/")
     @ApiOperation("save")
     public Result<?> save(@RequestBody T entity) {
-        return Result.ok(service.saveOrUpdate(entity)) ;
+        return Result.ok(service.save(entity)) ;
     }
 
     @DeleteMapping("/{id}")

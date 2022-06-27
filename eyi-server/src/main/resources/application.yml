@@ -29,3 +29,7 @@ spring:
 logging:
   level:
     org.springframework.boot.autoconfigure.logging: info
+
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: com.xu.server.base.handlers.EnumAutoConvertHandler

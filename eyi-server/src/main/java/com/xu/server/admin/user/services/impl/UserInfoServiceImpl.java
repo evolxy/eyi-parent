@@ -25,8 +25,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +39,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-@CacheConfig(cacheNames = "user")
-public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoRepository> implements IUserInfoService {
+public class UserInfoServiceImpl extends BaseServiceImpl< EyiUser, UserInfoRepository> implements IUserInfoService {
 
 	private final EmailService emailService;
 
@@ -59,10 +56,10 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		EyiUser user = null;
 		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
 			// 比较
-			user = repository.findByUsernameAndDelFlag(username, DelFlagEnum.NOT_DELETED.getValue());
+			user = baseMapper.findByUsernameAndDelFlag(username, DelFlagEnum.NOT_DELETED.getValue());
 		}
 		if (StringUtils.isNotBlank(email)) {
-			user = repository.findByEmailAndDelFlag(email, DelFlagEnum.NOT_DELETED.getValue());
+			user = baseMapper.findByEmailAndDelFlag(email, DelFlagEnum.NOT_DELETED.getValue());
 		}
 
 		if (user == null) {
@@ -75,7 +72,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 	}
 
 	@Override
-	@CacheEvict(key = "#loginUser.username")
+//	@CacheEvict(key = "#loginUser.username")
 	public boolean logout(LoginUserBo loginUser) {
 		if (loginUser != null) {
 			StpUtil.logout();
@@ -117,10 +114,10 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		String id = vo.getCodeId();
 		String key = CaptchaConstant.CAPTCHA_PREFIX + id;
 		Object o = RedisUtils.get(key);
+		RedisUtils.delete(key);
 		if (o == null) {
 			return false;
 		}
-		RedisUtils.delete(key);
 		return StringUtils.equals(captcha, o.toString());
 	}
 
@@ -157,7 +154,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		EyiUser user = new EyiUser();
 		BeanPropsUtils.copyNotNullProps(userInfo, user);
 		user.setId(id);
-		return saveOrUpdate(user)==null;
+		return saveOrUpdate(user);
 	}
 
 	@SneakyThrows
@@ -169,7 +166,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		} catch (Exception e) {
 			throw new EyiException("id 无效 " + id);
 		}
-		List<String> roleCodes = repository.findRoleCodeListById(uId);
+		List<String> roleCodes = baseMapper.findRoleCodeListById(uId);
 		return CollectionUtils.isEmpty(roleCodes) ? new ArrayList<>() : roleCodes;
 	}
 
@@ -182,7 +179,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		} catch (Exception e) {
 			throw new EyiException("id 无效 " + id);
 		}
-		List<String> permissionCode = repository.findPermissionCodeListById(uId);
+		List<String> permissionCode = baseMapper.findPermissionCodeListById(uId);
 		return CollectionUtils.isEmpty(permissionCode) ? new ArrayList<>() : permissionCode;
 	}
 }

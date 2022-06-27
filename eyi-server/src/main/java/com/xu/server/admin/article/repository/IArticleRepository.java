@@ -1,7 +1,8 @@
 package com.xu.server.admin.article.repository;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xu.server.admin.article.pojo.entity.Article;
-import com.xu.server.base.repository.BaseRepository;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Repository;
  * Created On 2022/4/6 10:28
  */
 @Repository
-public interface IArticleRepository extends BaseRepository<Article> {
+@Mapper
+public interface IArticleRepository extends BaseMapper<Article> {
     /**
      * 根据id查询文章
      * @param toHexString mongodb object id

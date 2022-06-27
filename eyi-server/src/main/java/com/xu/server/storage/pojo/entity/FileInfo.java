@@ -1,12 +1,11 @@
 package com.xu.server.storage.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.File;
 
 /**
@@ -16,8 +15,7 @@ import java.io.File;
  */
 
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "eyi_file_info")
-@Entity
+@TableName(value = "eyi_file_info")
 @Data
 @NoArgsConstructor
 public class FileInfo extends BaseEntity {

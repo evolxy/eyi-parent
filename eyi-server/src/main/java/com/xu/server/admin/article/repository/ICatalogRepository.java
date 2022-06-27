@@ -1,7 +1,8 @@
 package com.xu.server.admin.article.repository;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xu.server.admin.article.pojo.entity.Catalog;
-import com.xu.server.base.repository.BaseRepository;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +11,6 @@ import org.springframework.stereotype.Repository;
  * Created On 2022/4/1 16:41
  */
 @Repository
-public interface ICatalogRepository extends BaseRepository<Catalog> {
+@Mapper
+public interface ICatalogRepository extends BaseMapper<Catalog> {
 }

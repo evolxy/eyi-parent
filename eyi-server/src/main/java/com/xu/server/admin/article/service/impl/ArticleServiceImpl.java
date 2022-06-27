@@ -7,8 +7,8 @@ import com.xu.server.admin.article.pojo.entity.Article;
 import com.xu.server.admin.article.pojo.entity.Catalog;
 import com.xu.server.admin.article.pojo.vo.ArticleReqParam;
 import com.xu.server.admin.article.repository.IArticleRepository;
-import com.xu.server.admin.article.repository.ICatalogRepository;
 import com.xu.server.admin.article.service.IArticleService;
+import com.xu.server.admin.article.service.ICatalogService;
 import com.xu.server.base.service.impl.BaseServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ import java.util.List;
 public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleRepository> implements IArticleService {
     private final MongoTemplate template;
     private final IArticleRepository articleRepository;
-    private final ICatalogRepository catalogRepository;
+    private final ICatalogService catalogService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -49,10 +49,10 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
         // 保存基础信息到mysql中
         template.save(doc);
         article.setArticleId(doc.getId().toHexString());
-        articleRepository.save(article);
+        save(article);
         List<Catalog> catalogs = reqParam.getCatalogs();
         if (CollectionUtils.isNotEmpty(catalogs)) {
-            catalogRepository.saveAll(catalogs);
+            catalogService.saveBatch(catalogs);
         }
         return doc;
     }
@@ -81,8 +81,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
         article.setArticleId(reqParam.getArticleId().toHexString());
         List<Catalog> catalogs = reqParam.getCatalogs();
         if (CollectionUtils.isNotEmpty(catalogs)) {
-            List<Catalog> saved = catalogRepository.saveAll(catalogs);
-            article.setCatalogs(saved);
+            catalogService.saveBatch(catalogs);
+            article.setCatalogs(catalogs);
             saveOrUpdate(article);
         }
         return doc;
@@ -91,11 +91,11 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
     @Override
     public boolean removeById(Long id) {
         // 删除数据库中的
-        Article article = articleRepository.findById(id).orElse(null);
+        Article article = articleRepository.selectById(id);
         if (article==null) {
             return true;
         }
-        int logicDel = articleRepository.logicDelById(id);
+        int logicDel = articleRepository.deleteById(id);
         log.info("从数据库中删除 id=[{}] 的数据", id);
         String articleId = article.getArticleId();
         if (StringUtils.isNotBlank(articleId)) {

@@ -33,7 +33,6 @@ public interface IArticleService extends IBaseService<Article> {
      * @param id id
      * @return true | false
      */
-    @Override
     boolean removeById(Long id);
 
     /**

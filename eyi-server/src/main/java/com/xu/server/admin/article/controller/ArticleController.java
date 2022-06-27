@@ -1,5 +1,7 @@
 package com.xu.server.admin.article.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xu.commons.exception.EyiException;
 import com.xu.commons.result.Result;
 import com.xu.server.admin.article.pojo.document.ArticleDoc;
@@ -10,7 +12,6 @@ import com.xu.server.base.pojo.bo.PageParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/article")
 @Api(tags = "eyi-admin-文章管理")
 @AllArgsConstructor
+@SaCheckLogin
 public class ArticleController {
     private final IArticleService articleService;
 

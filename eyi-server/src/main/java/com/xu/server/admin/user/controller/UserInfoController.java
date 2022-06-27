@@ -2,6 +2,7 @@ package com.xu.server.admin.user.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.xu.commons.result.Result;
+import com.xu.commons.result.ResultCode;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
@@ -30,60 +31,61 @@ import java.util.Map;
 @Api(value = "server-admin-用户管理", tags = "server-admin-用户管理")
 public class UserInfoController extends BaseController<EyiUser, IUserInfoService> {
 
-    @PostMapping("/login")
-    @ApiOperation("登录")
-    public Result<?> login(@RequestBody LoginUserVo vo) {
-        boolean check = service.checkCaptcha(vo);
-        if (!check) {
-            return Result.failed("验证码错误");
-        }
-        String token = service.login(vo);
-        return StringUtils.isNotBlank(token) ?Result.ok("登录成功").data(token):Result.failed("登录失败");
-    }
 
-    @PostMapping("/changePasswd")
-    @ApiOperation("修改密码")
-    public Result<?> changePasswd(@RequestBody ChangePassVo vo) {
+	@PostMapping("/login")
+	@ApiOperation("登录")
+	public Result<?> login(@RequestBody LoginUserVo vo) {
+		boolean check = service.checkCaptcha(vo);
+		if (!check) {
+			return Result.failed("验证码错误");
+		}
+		String token = service.login(vo);
+		return StringUtils.isNotBlank(token) ? Result.ok("登录成功").data(token) : Result.failed("登录失败");
+	}
 
-        boolean changed = service.changePassWord(vo);
-        return changed?Result.ok("修改成功"):Result.failed("原密码错误");
-    }
+	@PostMapping("/changePasswd")
+	@ApiOperation("修改密码")
+	public Result<?> changePasswd(@RequestBody ChangePassVo vo) {
 
-    @PostMapping("/logout")
-    @ApiOperation("登出")
-    public Result<?> logout() {
-        LoginUserBo loginUser = EyiLoginUserUtil.loginUser();
-        if (null!=loginUser) {
-            boolean logout = service.logout(loginUser);
-        }
-        return null!=loginUser?Result.ok("登出成功"):Result.failed("未登录");
-    }
+		boolean changed = service.changePassWord(vo);
+		return changed ? Result.ok("修改成功") : Result.failed("原密码错误");
+	}
 
-    @GetMapping("/userInfo")
-    @ApiOperation("userInfo")
-    public Result<?> userInfo() {
-        LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
-        if (loginUserBo==null) {
-            return Result.failed("请登录");
-        } else {
-            return getById(loginUserBo.getId());
-        }
-    }
+	@PostMapping("/logout")
+	@ApiOperation("登出")
+	public Result<?> logout() {
+		LoginUserBo loginUser = EyiLoginUserUtil.loginUser();
+		if (null != loginUser) {
+			boolean logout = service.logout(loginUser);
+		}
+		return null != loginUser ? Result.ok("登出成功") : Result.failed("未登录");
+	}
+
+	@GetMapping("/userInfo")
+	@ApiOperation("userInfo")
+	public Result<?> userInfo() {
+		LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
+		if (loginUserBo == null) {
+			return Result.failed(ResultCode.NOT_LOGIN);
+		} else {
+			return Result.ok(service.getById(loginUserBo.getId()));
+		}
+	}
 
 
-    @PostMapping("")
-    @ApiOperation("update user info")
-    @SaCheckLogin
-    public Result<?> updateUserInfo(@RequestBody UserInfoVo userInfo) {
-        boolean changed = service.updateUserBaseInfo(userInfo);
-        return Result.ok();
-    }
+	@PostMapping("")
+	@ApiOperation("update user info")
+	@SaCheckLogin
+	public Result<?> updateUserInfo(@RequestBody UserInfoVo userInfo) {
+		boolean changed = service.updateUserBaseInfo(userInfo);
+		return changed ? Result.ok() : Result.failed();
+	}
 
-    @GetMapping("/captcha")
-    @ApiOperation("captcha")
-    public Result<?> captcha(CaptchaReqVo vo) {
-        Map<String, String> code = service.getCode(vo);
-        return Result.ok(code);
+	@GetMapping("/captcha")
+	@ApiOperation("captcha")
+	public Result<?> captcha(CaptchaReqVo vo) {
+		Map<String, String> code = service.getCode(vo);
+		return Result.ok(code);
 
-    }
+	}
 }

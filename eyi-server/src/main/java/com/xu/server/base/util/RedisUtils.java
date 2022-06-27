@@ -103,9 +103,8 @@ public class RedisUtils {
 	 * @param key k
 	 */
 	public static void delete(String key) {
-		if (!hasKey(key)) {
-			return;
+		if (hasKey(key)) {
+			template.delete(key);
 		}
-		template.delete(key);
 	}
 }

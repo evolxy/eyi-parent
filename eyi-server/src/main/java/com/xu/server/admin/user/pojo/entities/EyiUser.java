@@ -1,17 +1,20 @@
 package com.xu.server.admin.user.pojo.entities;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.xu.server.base.enums.GenderEnum;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SelectBeforeUpdate;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * @author Author
@@ -20,57 +23,50 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@Table(name = "eyi_user")
-@DynamicUpdate
-@SelectBeforeUpdate
+
+@TableName(value = "eyi_user")
 public class EyiUser extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 3737899427754241961L;
 
-    @Column(length = 30, nullable = false)
+    @TableField
     private String username;
 
-    @Column(length = 80, nullable = false)
+    @TableField
     @JsonIgnore
     private String password;
 
     /**
      * 密码强度： 数字  大写字母 小写字母 特殊符号  包含一个为1 两个2 三个3 四个4
      */
-    @Column
-    private int passwordStrength;
+    @TableField
+    private Integer passwordStrength;
 
-    @Column
+    @TableField
     private String avatar;
 
-    @Column(length = 50)
+    @TableField
     private String email;
 
-    @Column
+    @TableField
     private GenderEnum gender;
 
-    @Column(length = 300)
+    @TableField
     private String introduce;
 
-    @Column
+    @TableField
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthday;
 
-    @Column(length = 30)
+    @TableField
     private String nickname;
 
-    @Column
+    @TableField
     @JsonIgnore
-    private boolean expire;
+    private Boolean expire;
 
-    @Column
+    @TableField
     @JsonIgnore
-    private boolean locked;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JoinTable(name = "eyi_user_role",schema = "eyi",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")}
-    )
-    List<EyiRole> roles;
+    private Boolean locked;
 }

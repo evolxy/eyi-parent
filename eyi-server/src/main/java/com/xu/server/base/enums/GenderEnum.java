@@ -8,18 +8,28 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Created On 2022/3/28 16:34
  */
 
-public enum GenderEnum {
+public enum GenderEnum implements BaseEnum<GenderEnum, Integer> {
     /**
      * 性别
      */
-    MALE(true, "男") , FEMALE(false, "女"),
+    MALE(1, "男") , FEMALE(0, "女"),
     ;
-    final boolean gender;
+    final Integer gender;
     @JsonValue
     final String genderName;
 
-    GenderEnum(boolean gender, String genderName) {
+    GenderEnum(Integer gender, String genderName) {
         this.gender = gender;
         this.genderName = genderName;
+    }
+
+    @Override
+    public Integer getValue() {
+        return gender;
+    }
+
+    @Override
+    public String getName() {
+        return genderName;
     }
 }

@@ -7,8 +7,6 @@ import com.xu.server.base.pojo.bo.LoginUserBo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Optional;
-
 /**
  * @author Author
  * @version 0.1
@@ -20,11 +18,10 @@ public class EyiLoginUserUtil {
 		Long loginUserId = loginUserId();
 		if (loginUserId != null) {
 			UserInfoRepository repository = ApplicationContextUtil.getBean(UserInfoRepository.class);
-			Optional<EyiUser> optional = repository.findById(loginUserId);
-			if (optional.isPresent()) {
-				EyiUser user = optional.get();
+			EyiUser optional = repository.selectById(loginUserId);
+			if (optional != null) {
 				LoginUserBo bo = new LoginUserBo();
-				BeanPropsUtils.copyNotNullProps(user, bo);
+				BeanPropsUtils.copyNotNullProps(optional, bo);
 				return bo;
 			}
 		}

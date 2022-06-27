@@ -1,5 +1,6 @@
 package com.xu.server.storage.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xu.commons.result.Result;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.base.pojo.bo.PageParam;
@@ -8,7 +9,6 @@ import com.xu.server.storage.pojo.vo.FileVo;
 import com.xu.server.storage.services.IFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
