@@ -7,6 +7,7 @@ import com.xu.commons.result.Result;
 import com.xu.server.admin.article.pojo.document.ArticleDoc;
 import com.xu.server.admin.article.pojo.entity.Article;
 import com.xu.server.admin.article.pojo.vo.ArticleReqParam;
+import com.xu.server.admin.article.pojo.vo.ArticleVo;
 import com.xu.server.admin.article.service.IArticleService;
 import com.xu.server.base.pojo.bo.PageParam;
 import io.swagger.annotations.Api;
@@ -40,7 +41,7 @@ public class ArticleController {
             Article article,
             @RequestParam(defaultValue = "1", name = "page") Integer pageNo,
             @RequestParam(defaultValue = "10", name = "size") Integer pageSize) {
-        Page<Article> articles = articleService.page(pageNo, pageSize, article);
+        Page<ArticleVo> articles = articleService.queryArticleVoPage(pageNo, pageSize, article);
 	    PageParam<Article> res = PageParam.convertToPage(articles);
         return Result.ok(res);
     }

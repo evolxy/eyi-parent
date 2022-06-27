@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xu.server.admin.article.repository.IArticleRepository">
+
+    <resultMap id="articleRespVoResMap" type="com.xu.server.admin.article.pojo.vo.ArticleRespVo" autoMapping="true">
+        <collection
+                property="catalogs"
+                javaType="java.util.List"
+                ofType="com.xu.server.admin.article.pojo.entity.Catalog"
+                column="id"
+                select="com.xu.server.admin.article.repository.ICatalogRepository.selectCatalogByArticleId" />
+    </resultMap>
+    <select id="findByArticleIdAndDelFlag" resultMap="articleRespVoResMap">
+        SELECT
+               a.*
+        FROM eyi_article a
+
+        WHERE
+              a.article_id = #{articleId}
+          AND a.del_flag = #{delFlag}
+    </select>
+    <select id="selectArticleVoPage" resultMap="articleRespVoResMap">
+        SELECT
+            a.*
+        FROM eyi_article a
+    </select>
+</mapper>

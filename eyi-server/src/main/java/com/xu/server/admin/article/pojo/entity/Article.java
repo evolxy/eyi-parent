@@ -6,8 +6,6 @@ import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
 /**
  * @author Author
  * @version 0.1
@@ -25,7 +23,4 @@ public class Article extends BaseEntity {
 
 	@TableField
 	private String title;
-
-	@TableField(exist = false)
-	private List<Catalog> catalogs;
 }

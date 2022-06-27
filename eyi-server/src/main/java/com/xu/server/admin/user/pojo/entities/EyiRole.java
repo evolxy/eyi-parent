@@ -1,5 +1,6 @@
 package com.xu.server.admin.user.pojo.entities;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xu.server.base.pojo.entity.BaseEntity;
 import lombok.Data;
@@ -18,8 +19,10 @@ import java.io.Serializable;
 public class EyiRole extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 373784241961L;
 
+	@TableField
 	private String roleName;
 
+	@TableField
 	private String roleCode;
 
 }

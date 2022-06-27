@@ -1,15 +1,19 @@
 package com.xu.server.admin.article.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mongodb.client.result.UpdateResult;
 import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.article.pojo.document.ArticleDoc;
 import com.xu.server.admin.article.pojo.entity.Article;
 import com.xu.server.admin.article.pojo.entity.Catalog;
 import com.xu.server.admin.article.pojo.vo.ArticleReqParam;
+import com.xu.server.admin.article.pojo.vo.ArticleVo;
 import com.xu.server.admin.article.repository.IArticleRepository;
 import com.xu.server.admin.article.service.IArticleService;
 import com.xu.server.admin.article.service.ICatalogService;
 import com.xu.server.base.service.impl.BaseServiceImpl;
+import com.xu.server.base.util.QueryWrapperCreator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -120,5 +124,13 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
             log.error("ObjectId 不合法 {}", id);
             return null;
         }
+    }
+
+    @Override
+    public Page<ArticleVo> queryArticleVoPage(Integer pageNo, Integer pageSize, Article article) {
+        Page<ArticleVo> pp = new Page<>(pageNo, pageSize);
+        QueryWrapper<Article> qw = QueryWrapperCreator.create(article);
+        Page<ArticleVo>  res = baseMapper.selectArticleVoPage(pp, qw);
+        return res;
     }
 }
