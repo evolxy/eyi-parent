@@ -1,6 +1,9 @@
 package com.xu.server;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xu.commons.utils.TikaUtils;
+import com.xu.server.admin.article.pojo.vo.ArticleVo;
+import com.xu.server.admin.article.repository.IArticleRepository;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.base.util.RedisUtils;
@@ -318,5 +321,13 @@ public class EyiServerApplicationTest {
         if (RedisUtils.hasKey("ces")) {
             RedisUtils.expire("ces", 0);
         }
+    }
+
+    @Autowired
+    private IArticleRepository articleRepository;
+    @Test
+    void test31() {
+        Page<ArticleVo> page = articleRepository.selectArticleVoPage(new Page<>(1, 10), null);
+        System.out.println(page);
     }
 }

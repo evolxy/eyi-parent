@@ -3,6 +3,7 @@
 <mapper namespace="com.xu.server.admin.article.repository.IArticleRepository">
 
     <resultMap id="articleRespVoResMap" type="com.xu.server.admin.article.pojo.vo.ArticleRespVo" autoMapping="true">
+        <id column="id" property="id"/>
         <collection
                 property="catalogs"
                 javaType="java.util.List"
@@ -22,6 +23,6 @@
     <select id="selectArticleVoPage" resultMap="articleRespVoResMap">
         SELECT
             a.*
-        FROM eyi_article a
+        FROM eyi_article a WHERE del_flag = 0
     </select>
 </mapper>

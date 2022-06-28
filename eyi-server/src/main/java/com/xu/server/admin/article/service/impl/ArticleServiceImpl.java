@@ -80,7 +80,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
             throw new EyiException("更新失败");
         }
         // 保存数基础信息据库
-        Article article = new Article();
+        ArticleVo article = new ArticleVo();
         BeanUtils.copyProperties(reqParam, article);
         article.setArticleId(reqParam.getArticleId().toHexString());
         List<Catalog> catalogs = reqParam.getCatalogs();

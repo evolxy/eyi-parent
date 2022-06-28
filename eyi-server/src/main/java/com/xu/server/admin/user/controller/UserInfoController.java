@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.xu.commons.result.Result;
 import com.xu.commons.result.ResultCode;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.entities.EyiUserAdditionalInfo;
 import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
@@ -72,6 +73,27 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 		}
 	}
 
+	@GetMapping("/addition")
+	public Result<?> userAdditionalInfo() {
+		LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
+		if (loginUserBo == null) {
+			return Result.failed(ResultCode.NOT_LOGIN);
+		} else {
+			return Result.ok(service.getAdditionalInfo(loginUserBo.getId()));
+		}
+	}
+
+	@PostMapping("/change")
+	public Result<?> userAdditionalInfoChange(@RequestBody EyiUserAdditionalInfo info) {
+		Long loginUserId = EyiLoginUserUtil.loginUserId();
+		if (loginUserId != null) {
+			info.setId(loginUserId);
+		} else {
+			return Result.failed(ResultCode.NOT_LOGIN);
+		}
+		boolean updated = service.updateAdditionalInfo(info);
+		return updated ? Result.ok() : Result.failed();
+	}
 
 	@PostMapping("")
 	@ApiOperation("update user info")

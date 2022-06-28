@@ -31,7 +31,7 @@ spring:
       testOnReturn: false
 
       # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-      filters: stat,wall,slf4j
+      filters: stat,wall
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       # 配置DruidStatFilter
@@ -116,8 +116,3 @@ eyi:
       username: admin
       password: '@eyi0524'
 
-logging:
-  level:
-    org.hibernate.engine.spi.QueryParameters: debug
-    org.hibernate.engine.query.spi.HQLQueryPlan: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace

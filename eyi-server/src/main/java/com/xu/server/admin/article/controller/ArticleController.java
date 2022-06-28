@@ -42,7 +42,7 @@ public class ArticleController {
             @RequestParam(defaultValue = "1", name = "page") Integer pageNo,
             @RequestParam(defaultValue = "10", name = "size") Integer pageSize) {
         Page<ArticleVo> articles = articleService.queryArticleVoPage(pageNo, pageSize, article);
-	    PageParam<Article> res = PageParam.convertToPage(articles);
+	    PageParam<ArticleVo> res = PageParam.convertToPage(articles);
         return Result.ok(res);
     }
 

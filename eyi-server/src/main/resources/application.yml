@@ -28,8 +28,11 @@ spring:
 
 logging:
   level:
-    org.springframework.boot.autoconfigure.logging: info
+    com.xu.server.**.repository: info
+    com.baomidou.mybatisplus: info
 
 mybatis-plus:
   configuration:
     default-enum-type-handler: com.xu.server.base.handlers.EnumAutoConvertHandler
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mappers/**/*.xml

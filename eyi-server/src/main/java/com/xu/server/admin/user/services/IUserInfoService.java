@@ -2,6 +2,7 @@ package com.xu.server.admin.user.services;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.entities.EyiUserAdditionalInfo;
 import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
@@ -58,4 +59,18 @@ public interface IUserInfoService extends IBaseService<EyiUser>, StpInterface {
      * @return true| false
      */
 	boolean updateUserBaseInfo(UserInfoVo userInfo);
+
+    /**
+     * 附加信息表
+     * @param id id
+     * @return user info
+     */
+    EyiUserAdditionalInfo getAdditionalInfo(Long id);
+
+    /**
+     * 更新附加信息
+     * @param info info
+     * @return true
+     */
+    boolean updateAdditionalInfo(EyiUserAdditionalInfo info);
 }

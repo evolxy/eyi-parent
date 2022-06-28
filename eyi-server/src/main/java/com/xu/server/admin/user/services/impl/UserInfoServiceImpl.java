@@ -6,11 +6,13 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.user.constant.CaptchaConstant;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
+import com.xu.server.admin.user.pojo.entities.EyiUserAdditionalInfo;
 import com.xu.server.admin.user.pojo.vo.CaptchaReqVo;
 import com.xu.server.admin.user.pojo.vo.ChangePassVo;
 import com.xu.server.admin.user.pojo.vo.LoginUserVo;
 import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import com.xu.server.admin.user.repository.UserInfoRepository;
+import com.xu.server.admin.user.services.IUserAdditionalInfoService;
 import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.admin.user.util.Captcha;
 import com.xu.server.base.enums.DelFlagEnum;
@@ -42,9 +44,11 @@ import java.util.*;
 public class UserInfoServiceImpl extends BaseServiceImpl< EyiUser, UserInfoRepository> implements IUserInfoService {
 
 	private final EmailService emailService;
+	private final IUserAdditionalInfoService userAdditionalInfoService;
 
-	public UserInfoServiceImpl(EmailService emailService) {
+	public UserInfoServiceImpl(EmailService emailService, IUserAdditionalInfoService userAdditionalInfoService) {
 		this.emailService = emailService;
+		this.userAdditionalInfoService = userAdditionalInfoService;
 	}
 
 	@Override
@@ -129,16 +133,22 @@ public class UserInfoServiceImpl extends BaseServiceImpl< EyiUser, UserInfoRepos
 
 		long loginUserId = Long.parseLong(loginIdStr);
 
-		byte delFlag = 1;
 		EyiUser user = getById(loginUserId);
-		if (user == null || user.getDelFlag() == delFlag) {
+		if (user == null || Objects.equals(user.getDelFlag(), DelFlagEnum.DELETED.getValue())) {
 			throw new SaTokenException("用户不存在");
 		}
 		if (BCrypt.checkpw(oldPass, user.getPassword())) {
 			String hashNewPass = BCrypt.hashpw(vo.getNewPassword(), BCrypt.gensalt());
 			user.setPassword(hashNewPass);
-			saveOrUpdate(user);
-			return true;
+			EyiUser eu = new EyiUser();
+			eu.setId(loginUserId);
+			eu.setPassword(hashNewPass);
+			// 更新附加信息表
+			EyiUserAdditionalInfo additional = new EyiUserAdditionalInfo();
+			additional.setId(loginUserId);
+			additional.setPasswordStrength(vo.getPasswordStrength());
+			userAdditionalInfoService.updateById(additional);
+			return updateById(user);
 		} else {
 			return false;
 		}
@@ -155,6 +165,18 @@ public class UserInfoServiceImpl extends BaseServiceImpl< EyiUser, UserInfoRepos
 		BeanPropsUtils.copyNotNullProps(userInfo, user);
 		user.setId(id);
 		return saveOrUpdate(user);
+	}
+
+	@Override
+	public EyiUserAdditionalInfo getAdditionalInfo(Long id) {
+		EyiUserAdditionalInfo info = userAdditionalInfoService.getById(id);
+		info.setAnswer(null);
+		return info;
+	}
+
+	@Override
+	public boolean updateAdditionalInfo(EyiUserAdditionalInfo info) {
+		return userAdditionalInfoService.updateById(info);
 	}
 
 	@SneakyThrows

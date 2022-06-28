@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,7 +24,8 @@ public interface UserInfoRepository extends BaseMapper<EyiUser> {
      * @param delFlag 删除标记
      * @return user
      */
-    EyiUser findByUsernameAndDelFlag(String username, int delFlag);
+    @Select("SELECT * FROM eyi_user WHERE del_flag = #{delFlag} and username=#{username}")
+    EyiUser findByUsernameAndDelFlag(@Param("username") String username, @Param("delFlag") int delFlag);
 
     /**
      * 根据id 获取 角色编码列表

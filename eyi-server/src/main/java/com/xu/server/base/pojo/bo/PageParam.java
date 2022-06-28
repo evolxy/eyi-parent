@@ -32,10 +32,11 @@ public class PageParam<T> {
 		res.setTotalPages(totalPages);
 
 		long size = page.getSize();
-
-		long current = page.getSize();
+		long current = page.getCurrent();
+		long total = page.getTotal();
 		res.setCurrent(current);
 		res.setSize(size);
+		res.setTotalElements(total);
 		return res;
 	}
 }
