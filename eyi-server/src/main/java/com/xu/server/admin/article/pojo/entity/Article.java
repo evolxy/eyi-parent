@@ -23,4 +23,13 @@ public class Article extends BaseEntity {
 
 	@TableField
 	private String title;
+
+	@TableField
+	private Integer viewCount;
+
+	@TableField
+	private Integer likeCount;
+
+	@TableField
+	private Integer commentCount;
 }

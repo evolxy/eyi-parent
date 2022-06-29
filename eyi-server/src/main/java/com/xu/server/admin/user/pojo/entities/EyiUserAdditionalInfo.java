@@ -33,4 +33,6 @@ public class EyiUserAdditionalInfo extends BaseEntity {
 	@TableField
 	private String answer;
 
+	@TableField
+	private Integer status;
 }

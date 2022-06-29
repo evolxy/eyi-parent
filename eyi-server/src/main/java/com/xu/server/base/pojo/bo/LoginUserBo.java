@@ -18,6 +18,7 @@ import java.io.Serializable;
 public class LoginUserBo implements Serializable {
     private Long id;
     private String username;
+    private String nickname;
     private GenderEnum gender;
     private String  email;
     private boolean locked;

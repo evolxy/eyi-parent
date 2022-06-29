@@ -3,6 +3,7 @@ package com.xu.server.admin.user.services.impl;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xu.commons.exception.EyiException;
 import com.xu.server.admin.user.constant.CaptchaConstant;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
@@ -27,10 +28,13 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 /**
@@ -41,7 +45,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class UserInfoServiceImpl extends BaseServiceImpl< EyiUser, UserInfoRepository> implements IUserInfoService {
+public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoRepository> implements IUserInfoService {
 
 	private final EmailService emailService;
 	private final IUserAdditionalInfoService userAdditionalInfoService;
@@ -174,9 +178,41 @@ public class UserInfoServiceImpl extends BaseServiceImpl< EyiUser, UserInfoRepos
 		return info;
 	}
 
+	@Value("${server.port}")
+	private String port;
+	@Value("${spring.mvc.servlet.path}")
+	private String path;
+
 	@Override
 	public boolean updateAdditionalInfo(EyiUserAdditionalInfo info) {
+		String email = info.getEmailAddr();
+		if (StringUtils.isNotBlank(email)) {
+			// 发送email
+			Map<String, Object> map = new HashMap<>();
+			map.put("title", "激活备用邮箱");
+			map.put("nickname", EyiLoginUserUtil.loginUser().getNickname());
+			StringBuilder url = new StringBuilder();
+			String address = "localhost";
+			try {
+				address = InetAddress.getLocalHost().getHostAddress();
+			} catch (UnknownHostException e) {
+				log.error(e.getMessage(), e);
+			}
+			url.append("http://").append(address).append(":").append(port)
+					.append(path).append("/admin/user/spare").append("?").append("key=").append(info.getId());
+			map.put("url", url.toString());
+			emailService.sendMsg(map, new EmailInfo(email, "激活备用邮箱"), "emails/activeEmail.ftlh");
+		}
 		return userAdditionalInfoService.updateById(info);
+	}
+
+	@Override
+	public boolean activeEmail(Long key, int type) {
+		LambdaUpdateWrapper<EyiUserAdditionalInfo> qw = new LambdaUpdateWrapper<>();
+		qw
+				.eq(EyiUserAdditionalInfo::getId, key)
+				.set(EyiUserAdditionalInfo::getStatus, 1);
+		return userAdditionalInfoService.update(qw);
 	}
 
 	@SneakyThrows

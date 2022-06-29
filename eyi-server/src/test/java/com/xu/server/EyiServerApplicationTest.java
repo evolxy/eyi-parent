@@ -25,6 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -329,5 +331,11 @@ public class EyiServerApplicationTest {
     void test31() {
         Page<ArticleVo> page = articleRepository.selectArticleVoPage(new Page<>(1, 10), null);
         System.out.println(page);
+    }
+
+    @Test
+    void test32() {
+        String params = URLEncoder.encode("token=eyi 1231231", StandardCharsets.UTF_8);
+        System.out.println(params);
     }
 }

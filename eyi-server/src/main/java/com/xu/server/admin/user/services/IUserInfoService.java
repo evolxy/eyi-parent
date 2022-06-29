@@ -73,4 +73,12 @@ public interface IUserInfoService extends IBaseService<EyiUser>, StpInterface {
      * @return true
      */
     boolean updateAdditionalInfo(EyiUserAdditionalInfo info);
+
+    /**
+     * 激活邮箱
+     * @param key key
+     * @param type 类型 1 邮箱 2 备用邮箱
+     * @return boolean
+     */
+    boolean activeEmail(Long key, int type);
 }

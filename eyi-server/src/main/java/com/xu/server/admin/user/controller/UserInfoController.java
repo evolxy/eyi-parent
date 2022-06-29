@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -46,6 +48,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 
 	@PostMapping("/changePasswd")
 	@ApiOperation("修改密码")
+	@SaCheckLogin
 	public Result<?> changePasswd(@RequestBody ChangePassVo vo) {
 
 		boolean changed = service.changePassWord(vo);
@@ -64,6 +67,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 
 	@GetMapping("/userInfo")
 	@ApiOperation("userInfo")
+	@SaCheckLogin
 	public Result<?> userInfo() {
 		LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
 		if (loginUserBo == null) {
@@ -74,6 +78,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	}
 
 	@GetMapping("/addition")
+	@SaCheckLogin
 	public Result<?> userAdditionalInfo() {
 		LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
 		if (loginUserBo == null) {
@@ -84,6 +89,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	}
 
 	@PostMapping("/change")
+	@SaCheckLogin
 	public Result<?> userAdditionalInfoChange(@RequestBody EyiUserAdditionalInfo info) {
 		Long loginUserId = EyiLoginUserUtil.loginUserId();
 		if (loginUserId != null) {
@@ -108,6 +114,26 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	public Result<?> captcha(CaptchaReqVo vo) {
 		Map<String, String> code = service.getCode(vo);
 		return Result.ok(code);
+	}
 
+
+	@GetMapping("/spare")
+	@ApiOperation("激活")
+	public String activeEmail(Long key) {
+		boolean res = service.activeEmail(key, 2);
+		StringBuilder base = new StringBuilder();
+		String address = "localhost";
+		try {
+			address = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		address = address + ":12002" ;
+		if (res) {
+			base.append("激活成功, 请登录[http://").append(address).append("/user/login]");
+		} else {
+			base.append("激活失败！");
+		}
+		return base.toString();
 	}
 }

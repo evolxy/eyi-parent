@@ -1,5 +1,6 @@
 package com.xu.server.storage.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xu.commons.result.Result;
 import com.xu.commons.utils.TikaUtils;
@@ -35,6 +36,7 @@ public class FileController {
 
     @PostMapping("")
     @ApiOperation("文件上传")
+    @SaCheckLogin
     public Result<?> save(@RequestPart MultipartFile file) {
         String path = fileService.upload(file);
         return Result.ok().data(path);
@@ -42,6 +44,7 @@ public class FileController {
 
     @PostMapping("/all")
     @ApiOperation("多文件上传")
+    @SaCheckLogin
     public Result<?> save(@RequestPart MultipartFile[] files) {
         for (MultipartFile file : files) {
             fileService.upload(file);
@@ -69,12 +72,14 @@ public class FileController {
 
     @ApiOperation("删除文件")
     @DeleteMapping("/{id}")
+    @SaCheckLogin
     public Result<?> deleteFileById(@PathVariable Long id) {
         return fileService.removeById(id)?Result.ok("删除成功"):Result.failed("删除失败");
     }
 
     @ApiOperation("分页查询")
     @GetMapping("/page")
+    @SaCheckLogin
     public Result<?> queryPage(@RequestParam int current, @RequestParam int size) {
         Page<FileInfo> res = fileService.page(current, size);
         PageParam<FileInfo> resPage = PageParam.convertToPage(res);
