@@ -180,8 +180,9 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 
 	@Value("${server.port}")
 	private String port;
-	@Value("${spring.mvc.servlet.path}")
-	private String path;
+
+//	@Value("${spring.mvc.servlet.path}")
+//	private String path;
 
 	@Override
 	public boolean updateAdditionalInfo(EyiUserAdditionalInfo info) {
@@ -199,7 +200,8 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 				log.error(e.getMessage(), e);
 			}
 			url.append("http://").append(address).append(":").append(port)
-					.append(path).append("/admin/user/spare").append("?").append("key=").append(info.getId());
+//					.append(path)
+					.append("/admin/user/spare").append("?").append("key=").append(info.getId());
 			map.put("url", url.toString());
 			emailService.sendMsg(map, new EmailInfo(email, "激活备用邮箱"), "emails/activeEmail.ftlh");
 		}

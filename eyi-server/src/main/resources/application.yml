@@ -7,9 +7,9 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 200MB
-  mvc:
-    servlet:
-      path: /eyi
+#  mvc:
+#    servlet:
+#      path: /eyi-server
   mail:
     host: smtp.qq.com
     port: 465
