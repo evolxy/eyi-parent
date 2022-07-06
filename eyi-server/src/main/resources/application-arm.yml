@@ -12,7 +12,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://138.2.58.19:3306/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+      url: jdbc:mysql://arm.xuyupeng.top:3306/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
       username: root
       password: '@test1234'
       initialSize: 5
@@ -60,10 +60,10 @@ spring:
     allow-bean-definition-overriding: true
 
   redis:
-    host: 138.2.58.19
+    host: arm.xuyupeng.top
     port: 6380
     password: '!adm123456'
-    timeout: 10000
+    timeout: 9000
     lettuce:
       pool:
         # 连接池最大连接数（使用负值表示没有限制）
@@ -82,7 +82,7 @@ spring:
       database: eyi
       username: eyi
       password: 'eyiAdm$0524)'
-      host: 138.2.58.19
+      host: arm.xuyupeng.top
       port: 27019
       authentication-database: eyi
 
