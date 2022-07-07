@@ -6,9 +6,9 @@ spring:
     pathmatch:
       # springboot2.6 使用path_pattern  但是 springfox 默认使用ant_path_matcher 导致启动不了
       matching-strategy: ant_path_matcher
-  config:
-    activate:
-      on-profile: prod
+#  config:
+#    activate:
+#      on-profile: prod
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
