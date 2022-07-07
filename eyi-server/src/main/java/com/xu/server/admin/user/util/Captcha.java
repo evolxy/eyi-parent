@@ -50,18 +50,18 @@ public class Captcha {
 	 * @return code
 	 */
 	public static String createImgCaptcha(OutputStream os,  int lineNum, String formatName, String code) {
-		BufferedImage img = new BufferedImage(80, 32, BufferedImage.TYPE_3BYTE_BGR);
+		BufferedImage img = new BufferedImage(100, 40, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics graphics = img.getGraphics();
 		// 设置背景填充色
 		graphics.setColor(new Color(239, 239, 239));
-		graphics.fillRect(0, 0, 80, 32);
+		graphics.fillRect(0, 0, 100, 40);
 
 		// 字体和颜色设置
 		graphics.setColor(new Color(49, 49, 49));
 		graphics.setFont(new Font("Georgia", Font.ITALIC, 30));
 		Random random = new Random(System.currentTimeMillis());
 
-		graphics.drawString(code, 5, 24);
+		graphics.drawString(code, 10, 24);
 		for (int i = 0; i < lineNum; i++) {
 			Color c = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 			graphics.setColor(c);
