@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: arm
   banner:
     location: classpath:banner.txt
   servlet:

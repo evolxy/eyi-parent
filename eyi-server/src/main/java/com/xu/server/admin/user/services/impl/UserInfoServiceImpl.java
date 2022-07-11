@@ -95,6 +95,9 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 		String captchaId = UUID.randomUUID().toString().replaceAll("-", "");
 		RedisUtils.set(CaptchaConstant.CAPTCHA_PREFIX + captchaId, code, CaptchaConstant.EXPIRE_SECONDS);
 		codeMap.put("id", captchaId);
+		if (vo == null) {
+			vo = new CaptchaReqVo();
+		}
 		switch (vo.getType()) {
 			case EMAIL:
 				// 发送邮件
@@ -180,9 +183,6 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 
 	@Value("${server.port}")
 	private String port;
-
-//	@Value("${spring.mvc.servlet.path}")
-//	private String path;
 
 	@Override
 	public boolean updateAdditionalInfo(EyiUserAdditionalInfo info) {
