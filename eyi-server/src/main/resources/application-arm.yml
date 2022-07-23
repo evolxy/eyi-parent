@@ -12,9 +12,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://arm.xuyupeng.top:3306/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+      url: jdbc:mysql://arm.xuyupeng.top:3326/eyi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
       username: root
-      password: '@test1234'
+      password: '!Xu19980524'
       initialSize: 5
       minIdle: 5
       maxActive: 20
@@ -61,7 +61,7 @@ spring:
 
   redis:
     host: arm.xuyupeng.top
-    port: 6380
+    port: 6480
     password: '!adm123456'
     timeout: 9000
     lettuce:
@@ -83,7 +83,7 @@ spring:
       username: eyi
       password: 'eyiAdm$0524)'
       host: arm.xuyupeng.top
-      port: 27019
+      port: 27029
       authentication-database: eyi
 
 sa-token:
@@ -114,6 +114,6 @@ sa-token:
 eyi:
   storage:
     minio:
-      endpoint: http://arm.xuyupeng.top:19099
+      endpoint: http://arm.xuyupeng.top:29099
       username: admin
       password: '@eyi0524'
