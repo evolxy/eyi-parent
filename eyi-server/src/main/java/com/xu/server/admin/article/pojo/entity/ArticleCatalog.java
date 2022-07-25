@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * Created On 2022/7/25 14:01
  */
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "eyi_article")
+@TableName(value = "eyi_article_catalog")
 @Data
 public class ArticleCatalog extends BaseEntity {
 	private Long catalogId;

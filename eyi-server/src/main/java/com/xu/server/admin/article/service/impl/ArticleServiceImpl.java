@@ -64,7 +64,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
 		List<ArticleCatalog> articleCatalogs = new ArrayList<>();
 		Long articleId = article.getId();
 		if (CollectionUtils.isNotEmpty(catalogs)) {
-			catalogService.getOrSave(catalogs);
+			catalogs = catalogService.getOrSave(catalogs);
 			catalogs.forEach(it -> {
 				ArticleCatalog articleCatalog = new ArticleCatalog();
 				articleCatalog.setCatalogId(it.getId());
@@ -103,7 +103,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, IArticleReposit
 		article.setArticleId(reqParam.getArticleId().toHexString());
 		List<Catalog> catalogs = reqParam.getCatalogs();
 		if (CollectionUtils.isNotEmpty(catalogs)) {
-			catalogService.saveBatch(catalogs);
+			catalogs = catalogService.getOrSave(catalogs);
 			article.setCatalogs(catalogs);
 			saveOrUpdate(article);
 		}

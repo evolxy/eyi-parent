@@ -4,6 +4,7 @@ import com.xu.server.storage.client.IStorageClient;
 import com.xu.server.storage.constant.MinioConstant;
 import com.xu.server.storage.utils.MinioUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +19,11 @@ public class MinioFileClient implements IStorageClient {
 	@Override
 	public String save(InputStream file, String filename) {
 		String url = MinioUtils.uploadObject(MinioConstant.BUCKET_NAME, filename, file);
-		return url.substring(0, url.indexOf("?"));
+		if (StringUtils.isNotBlank(url)) {
+			return url.substring(0, url.indexOf("?"));
+		} else {
+			return url;
+		}
 	}
 
 	@Override
