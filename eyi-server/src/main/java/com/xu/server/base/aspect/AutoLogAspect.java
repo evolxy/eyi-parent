@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Author
@@ -27,8 +28,17 @@ public class AutoLogAspect {
         String methodName = jp.getSignature().getName();
         Object[] args = jp.getArgs();
         for (Object arg: args) {
+            if (arg == null) {
+                continue;
+            }
+            Class<?> aClass = arg.getClass();
+            if (MultipartFile.class.isAssignableFrom(aClass)) {
+                continue;
+            }
+            String argTypeName = aClass.getSimpleName();
             String argStr = JSONObject.toJSONString(arg);
-            sb.append("\t").append(arg.getClass().getSimpleName()).append("\t").append(argStr);
+
+            sb.append("\t").append(argTypeName).append("\t").append(argStr);
         }
         log.debug("正在调用方法 {} , 参数列表: {}", methodName, sb);
     }
