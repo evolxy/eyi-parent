@@ -20,7 +20,7 @@ import com.xu.server.base.enums.DelFlagEnum;
 import com.xu.server.base.pojo.bo.LoginUserBo;
 import com.xu.server.base.service.impl.BaseServiceImpl;
 import com.xu.server.base.util.BeanPropsUtils;
-import com.xu.server.base.util.EyiLoginUserUtil;
+import com.xu.server.base.util.LoginUserUtil;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
@@ -164,7 +164,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public boolean updateUserBaseInfo(UserInfoVo userInfo) {
-		Long id = EyiLoginUserUtil.loginUserId();
+		Long id = LoginUserUtil.loginUserId();
 		if (id == null) {
 			return false;
 		}
@@ -191,7 +191,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<EyiUser, UserInfoReposi
 			// 发送email
 			Map<String, Object> map = new HashMap<>();
 			map.put("title", "激活备用邮箱");
-			map.put("nickname", EyiLoginUserUtil.loginUser().getNickname());
+			map.put("nickname", LoginUserUtil.loginUser().getNickname());
 			StringBuilder url = new StringBuilder();
 			String address = "localhost";
 			try {

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.xu.server.base.enums.DelFlagEnum;
-import com.xu.server.base.util.EyiLoginUserUtil;
+import com.xu.server.base.util.LoginUserUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -77,13 +77,13 @@ public class BaseEntity implements Serializable {
 
     public void setUpdateInfo() {
         this.updateTime = LocalDateTime.now();
-        this.updateId = EyiLoginUserUtil.loginUserId();
+        this.updateId = LoginUserUtil.loginUserId();
     }
 
     public void setInsertInfo() {
         this.delFlag = DelFlagEnum.NOT_DELETED.getValue();
         setUpdateInfo();
-        this.createId = EyiLoginUserUtil.loginUserId();
+        this.createId = LoginUserUtil.loginUserId();
         this.createTime = LocalDateTime.now();
     }
 }

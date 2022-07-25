@@ -3,7 +3,7 @@ package com.xu.server.base.handlers;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.xu.server.base.enums.DelFlagEnum;
-import com.xu.server.base.util.EyiLoginUserUtil;
+import com.xu.server.base.util.LoginUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -26,8 +26,8 @@ public class TableFieldAutoFillHandler implements MetaObjectHandler {
 		this.strictInsertFill(metaObject, "delFlag", DelFlagEnum.NOT_DELETED::getValue, Integer.class);
 		boolean login = StpUtil.isLogin();
 		if (login) {
-			this.strictInsertFill(metaObject, "createId", EyiLoginUserUtil::loginUserId, Long.class);
-			this.strictInsertFill(metaObject, "updateId", EyiLoginUserUtil::loginUserId, Long.class);
+			this.strictInsertFill(metaObject, "createId", LoginUserUtil::loginUserId, Long.class);
+			this.strictInsertFill(metaObject, "updateId", LoginUserUtil::loginUserId, Long.class);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class TableFieldAutoFillHandler implements MetaObjectHandler {
 		this.strictUpdateFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
 		boolean login = StpUtil.isLogin();
 		if (login) {
-			this.strictInsertFill(metaObject, "updateId", EyiLoginUserUtil::loginUserId, Long.class);
+			this.strictInsertFill(metaObject, "updateId", LoginUserUtil::loginUserId, Long.class);
 		}
 	}
 }

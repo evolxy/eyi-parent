@@ -12,7 +12,7 @@ import com.xu.server.admin.user.pojo.vo.UserInfoVo;
 import com.xu.server.admin.user.services.IUserInfoService;
 import com.xu.server.base.controller.BaseController;
 import com.xu.server.base.pojo.bo.LoginUserBo;
-import com.xu.server.base.util.EyiLoginUserUtil;
+import com.xu.server.base.util.LoginUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +58,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	@PostMapping("/logout")
 	@ApiOperation("登出")
 	public Result<?> logout() {
-		LoginUserBo loginUser = EyiLoginUserUtil.loginUser();
+		LoginUserBo loginUser = LoginUserUtil.loginUser();
 		if (null != loginUser) {
 			boolean logout = service.logout(loginUser);
 		}
@@ -69,7 +69,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	@ApiOperation("userInfo")
 	@SaCheckLogin
 	public Result<?> userInfo() {
-		LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
+		LoginUserBo loginUserBo = LoginUserUtil.loginUser();
 		if (loginUserBo == null) {
 			return Result.failed(ResultCode.NOT_LOGIN);
 		} else {
@@ -80,7 +80,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	@GetMapping("/addition")
 	@SaCheckLogin
 	public Result<?> userAdditionalInfo() {
-		LoginUserBo loginUserBo = EyiLoginUserUtil.loginUser();
+		LoginUserBo loginUserBo = LoginUserUtil.loginUser();
 		if (loginUserBo == null) {
 			return Result.failed(ResultCode.NOT_LOGIN);
 		} else {
@@ -91,7 +91,7 @@ public class UserInfoController extends BaseController<EyiUser, IUserInfoService
 	@PostMapping("/change")
 	@SaCheckLogin
 	public Result<?> userAdditionalInfoChange(@RequestBody EyiUserAdditionalInfo info) {
-		Long loginUserId = EyiLoginUserUtil.loginUserId();
+		Long loginUserId = LoginUserUtil.loginUserId();
 		if (loginUserId != null) {
 			info.setId(loginUserId);
 		} else {

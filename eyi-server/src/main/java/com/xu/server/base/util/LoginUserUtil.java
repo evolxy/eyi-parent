@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  * Created On 2022/3/28 16:51
  */
 @Slf4j
-public class EyiLoginUserUtil {
+public class LoginUserUtil {
 	public static LoginUserBo loginUser() {
 		Long loginUserId = loginUserId();
 		if (loginUserId != null) {
