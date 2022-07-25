@@ -2,8 +2,10 @@ package com.xu.server;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xu.commons.utils.TikaUtils;
+import com.xu.server.admin.article.pojo.entity.Catalog;
 import com.xu.server.admin.article.pojo.vo.ArticleVo;
 import com.xu.server.admin.article.repository.IArticleRepository;
+import com.xu.server.admin.article.service.ICatalogService;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
 import com.xu.server.base.util.RedisUtils;
@@ -30,10 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Author
@@ -337,5 +336,20 @@ public class EyiServerApplicationTest {
     void test32() {
         String params = URLEncoder.encode("token=eyi 1231231", StandardCharsets.UTF_8);
         System.out.println(params);
+    }
+
+    @Autowired
+    private ICatalogService articleCatalogService;
+    @Test
+    void test33() {
+        List<Catalog> catalogList = new ArrayList<>();
+        List<String> strings = Arrays.asList("测试", "后端", "JAVA");
+        for (String string : strings) {
+            Catalog catalog = new Catalog();
+            catalog.setCatalogName(string);
+            catalogList.add(catalog);
+        }
+        List<Catalog> list = articleCatalogService.getOrSave(catalogList);
+        System.out.println(list);
     }
 }
