@@ -1,6 +1,7 @@
 package com.xu.server;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xu.commons.exception.EyiLogicException;
 import com.xu.commons.utils.TikaUtils;
 import com.xu.server.admin.article.pojo.entity.Catalog;
 import com.xu.server.admin.article.pojo.vo.ArticleVo;
@@ -8,6 +9,8 @@ import com.xu.server.admin.article.repository.IArticleRepository;
 import com.xu.server.admin.article.service.ICatalogService;
 import com.xu.server.admin.user.pojo.entities.EyiUser;
 import com.xu.server.admin.user.repository.UserInfoRepository;
+import com.xu.server.api.article.pojo.vo.ApiArticleDocVo;
+import com.xu.server.api.article.service.IApiArticleService;
 import com.xu.server.base.util.RedisUtils;
 import com.xu.server.email.pojo.EmailInfo;
 import com.xu.server.email.service.EmailService;
@@ -351,5 +354,17 @@ public class EyiServerApplicationTest {
         }
         List<Catalog> list = articleCatalogService.getOrSave(catalogList);
         System.out.println(list);
+    }
+
+    @Autowired
+    private IApiArticleService apiArticleService;
+    @Test
+    void test34() {
+        try {
+            ApiArticleDocVo vo = apiArticleService.queryArticleDetailByArticleId("62de4964451fe852080ee233");
+            log.error("vo {}", vo);
+        } catch (EyiLogicException e) {
+           log.error(e.getMessage(), e);
+        }
     }
 }

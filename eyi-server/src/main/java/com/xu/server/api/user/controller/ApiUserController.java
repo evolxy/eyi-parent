@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiUserController {
     private final IApiUserService userService;
 
-    @GetMapping("/info")
+    @GetMapping
     public Result<?> masterUserInfo() {
         ApiUserInfoVo infoVo = userService.queryMasterUserInfo();
         if (infoVo == null) {
